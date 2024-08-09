@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .main {
+    box-shadow: 2px 2px 0 theme("colors.orange.600");
+  }
+}
+/* @font-face {
+  font-family: "Jost";
+  src: url("/public/Jost/static/Jost-Regular.ttf");
+}
+.Jost{
+  font-family: "Jost";
+} */
+/* *{
+  font-family: 'jost';
+} */
+/* :root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+} */
+
+.no-scroll {
+  overflow: hidden !important;
+}
+
+details summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+details summary::-webkit-details-marker {
+  display: none; /* Hide marker in WebKit browsers (e.g., Safari, Chrome) */
+}
+
+details summary::marker {
+  display: none; /* Hide marker in other browsers */
+}
+
+.category-slider swiper-container swiper-slide {
+  max-width: 100px;
+  margin-right: 10px;
+  min-height: 95px;
+  margin-bottom: 30px;
+}
+
+@media (min-width: 1000px) {
+  .category-slider swiper-container swiper-slide {
+    max-width: 120px;
+  }
+}
+
+@media (min-width: 800px) {
+  .category-slider swiper-container swiper-slide {
+    margin-bottom: 0px;
+  }
+}
