@@ -6,6 +6,7 @@ const page = () => {
   const [user, setUser] = useState({
     displayName: "",
     email: "",
+    phone: "",
   });
 
   const handleCreateCustomer = async () => {
@@ -17,7 +18,7 @@ const page = () => {
       );
       window.alert(response.data.message);
       console.log(response.data);
-      setUser({ displayName: "", email: "" });
+      setUser({ displayName: "", email: "" , phone: ""});
     } catch (error) {
       window.alert(error.response.data.message);
       console.error("Error creating customer:", error);
@@ -58,10 +59,24 @@ const page = () => {
                 placeholder="Enter email"
               />
             </div>
+            <div className="flex flex-col w-full gap-2">
+              <label className="text-sm font-bold" htmlFor="phone">
+                Phone
+              </label>
+              <input
+                id="phone"
+                type="text"
+                value={user.phone}
+                onChange={(e) => setUser({ ...user, phone: e.target.value })}
+                className="border border-gray-300 rounded p-1"
+                placeholder="Enter phone"
+              />
+            </div>
           </div>
           <button
             onClick={handleCreateCustomer}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4"
+            disabled={!(user.displayName && user.email && user.phone)}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 disabled:opacity-50"
           >
             Create Customer
           </button>

@@ -14,7 +14,7 @@ import {
   selectRoomData,
   setRoomData,
 } from "@/components/Features/Slices/roomSlice";
-import "./styles.css"
+import "./styles.css";
 import axios from "axios";
 import Carous from "@/components/Carousel/Carous";
 import { useParams, useRouter } from "next/navigation";
@@ -28,14 +28,13 @@ import TabsProductContent from "@/components/compounds/TabsProductContent";
 
 const RoomPage = () => {
   const [navigationItemData, setNavigationItemData] = useState(null);
-  const router = useRouter()
-  const [openFreeSAmple, setOpenFreeSample] = useState(false)
-  const [categoryFilterOpen, setCategoryFilterOpen] = useState(false)
-  const [ColorfilterOpen, setColorFilterOpen] = useState(false)
-  const [selectedCategory, setSelectedCategory] = useState("All Categories")
-  const [selectedColor, setSelectedColor] = useState("All Colors")
-  const [allColors, setAllColors] = useState([])
-
+  const router = useRouter();
+  const [openFreeSAmple, setOpenFreeSample] = useState(false);
+  const [categoryFilterOpen, setCategoryFilterOpen] = useState(false);
+  const [ColorfilterOpen, setColorFilterOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+  const [selectedColor, setSelectedColor] = useState("All Colors");
+  const [allColors, setAllColors] = useState([]);
 
   useEffect(() => {
     if (window !== undefined) {
@@ -110,8 +109,6 @@ const RoomPage = () => {
     }
   }, [selectedData, dispatch]);
 
-
-
   // useEffect(() => {
   //   const handleScroll = () => {
   //     if (window.scrollY > 0) {
@@ -159,7 +156,9 @@ const RoomPage = () => {
     "px-[24px] py-3 mr-2.5 rounded-full flex  whitespace-nowrap";
   const fetchAccessories = async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/productByCategoryAndSubCategory?category=${data?.category}&subcategory=Accessories`);
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/productByCategoryAndSubCategory?category=${data?.category}&subcategory=Accessories`
+      );
       setAccessories(response.data);
     } catch (error) {
       console.log(error);
@@ -172,44 +171,46 @@ const RoomPage = () => {
     }
   }, [data]);
 
-
-  const [allProducts, setAllProducts] = useState([])
-  const [allCategories, setAllCategories] = useState([])
+  const [allProducts, setAllProducts] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
 
   const fetchAllProducts = async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products?limit=1000`);
-      setAllProducts(response.data)
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products?limit=1000`
+      );
+      setAllProducts(response.data);
     } catch (error) {
       console.log(error);
     }
   };
   const fetchAllCategories = async () => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/categories`);
-      setAllCategories(response.data)
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/categories`
+      );
+      setAllCategories(response.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchAllProducts()
-    fetchAllCategories()
-
+    fetchAllProducts();
+    fetchAllCategories();
   }, []);
 
-  const [FilteredProducts, setFilteredProducts] = useState([])
+  const [FilteredProducts, setFilteredProducts] = useState([]);
 
   useEffect(() => {
-    const ExcludedAccessories = allProducts?.filter(item => item?.subcategory !== "Accessories")
+    const ExcludedAccessories = allProducts?.filter(
+      (item) => item?.subcategory !== "Accessories"
+    );
     const colors = allProducts.flatMap((product) => product.colors);
     const uniqueColors = [...new Set(colors)];
-    setAllColors(uniqueColors)
-    setFilteredProducts(ExcludedAccessories)
-
-  }, [allProducts])
-
+    setAllColors(uniqueColors);
+    setFilteredProducts(ExcludedAccessories);
+  }, [allProducts]);
 
   const [selectedSamples, setSelectedSamples] = useState([]);
 
@@ -236,7 +237,7 @@ const RoomPage = () => {
         if (prevSamples.length < 3) {
           return [...prevSamples, item];
         } else {
-          window.alert("You can select only 2 samples")
+          window.alert("You can select only 2 samples");
         }
       }
     });
@@ -246,39 +247,41 @@ const RoomPage = () => {
   const removeItem = (item) => {
     const filteredSamples = selectedSamples.filter((sample) => sample !== item);
     setSelectedSamples(filteredSamples);
-  }
+  };
 
   const handleJoinLive = () => {
     // Store category data in local storage
-    localStorage.setItem('selectedCategory', category);
+    localStorage.setItem("selectedCategory", category);
   };
 
   const handleFreeSampling = () => {
-    setOpenFreeSample(true)
+    setOpenFreeSample(true);
     document.body.style.overflow = "hidden";
     if (selectedSamples.length < 3) {
       if (selectedSamples.includes(data)) {
-        return
+        return;
       } else {
-        setSelectedSamples((prev) => [...prev, data])
+        setSelectedSamples((prev) => [...prev, data]);
       }
     }
-
-  }
+  };
 
   const handleClose = () => {
-    setOpenFreeSample(false)
+    setOpenFreeSample(false);
     document.body.style.overflow = "auto";
-  }
+  };
 
   const handleBuySamples = async () => {
-    setOpenFreeSample(false)
+    setOpenFreeSample(false);
     document.body.style.overflow = "auto";
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/freeSampling`, {
-        deviceId: localStorage.getItem("deviceId"),
-        freeSampleIds: selectedSamples.map(sample => sample._id),
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/freeSampling`,
+        {
+          deviceId: localStorage.getItem("deviceId"),
+          freeSampleIds: selectedSamples.map((sample) => sample._id),
+        }
+      );
       if (response.status === 200) {
         dispatch(setDbItems(response.data));
         router.push("/checkout");
@@ -288,17 +291,24 @@ const RoomPage = () => {
     }
   };
 
-
   const fetchProductsbyCategory = async (category) => {
     try {
       if (category === "All Categories") {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products?limit=1000`);
-        const excludeAccessories = response.data?.filter(item => item?.subcategory !== "Accessories")
-        setFilteredProducts(excludeAccessories)
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products?limit=1000`
+        );
+        const excludeAccessories = response.data?.filter(
+          (item) => item?.subcategory !== "Accessories"
+        );
+        setFilteredProducts(excludeAccessories);
       } else {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/fetchProductsByCategory/${category}`);
-        const excludeAccessories = response.data?.filter(item => item?.subcategory !== "Accessories")
-        setFilteredProducts(excludeAccessories)
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/fetchProductsByCategory/${category}`
+        );
+        const excludeAccessories = response.data?.filter(
+          (item) => item?.subcategory !== "Accessories"
+        );
+        setFilteredProducts(excludeAccessories);
       }
     } catch (error) {
       console.log(error);
@@ -306,15 +316,14 @@ const RoomPage = () => {
   };
 
   const handleCategoryFilter = (item) => {
-    setSelectedCategory(item)
-    fetchProductsbyCategory(item)
-
-  }
+    setSelectedCategory(item);
+    fetchProductsbyCategory(item);
+  };
 
   const handleColorFilter = async (color) => {
-    setSelectedColor(color)
+    setSelectedColor(color);
     if (color === "All Colors") {
-      setFilteredProducts(FilteredProducts)
+      setFilteredProducts(FilteredProducts);
     } else {
       // await fetchProductsbyCategory("All Categories")
       const filteredProducts = FilteredProducts.filter((product) => {
@@ -322,15 +331,13 @@ const RoomPage = () => {
       });
       setFilteredProducts(filteredProducts);
     }
-
-  }
+  };
 
   const handleRemoveAllFilters = () => {
-    setSelectedCategory("All Categories")
-    setSelectedColor("All Colors")
-    fetchProductsbyCategory("All Categories")
-  }
-
+    setSelectedCategory("All Categories");
+    setSelectedColor("All Colors");
+    fetchProductsbyCategory("All Categories");
+  };
 
   return (
     <>
@@ -375,7 +382,7 @@ const RoomPage = () => {
                   </>
                 )}
                 <Link
-                  href={`/${data?.category?.replace(/ /g, "-")}/category/all`}
+                  href={`/${data?.category?.replace(/ /g, "-")}/collection/all`}
                 >
                   <span className="hover:text-gray-500 cursor-pointer ">
                     {data?.category}
@@ -389,10 +396,10 @@ const RoomPage = () => {
                   className="opacity-100 h-[8px] mt-[5px]"
                 />
                 <Link
-                  href={`/${data?.category?.replace(
+                  href={`/${data?.subcategory?.replace(
                     / /g,
                     "-"
-                  )}/category/${data?.subcategory?.replace(/ /g, "-")}`}
+                  )}/collection/${data?.category?.replace(/ /g, "-")}`}
                 >
                   <span className="hover:text-gray-500 cursor-pointer ">
                     {data?.subcategory}
@@ -412,7 +419,11 @@ const RoomPage = () => {
               <RoomImageList images={data?.images} alt={data?.productTitle} />
               <ImageCaresoul images={data?.images} />
               <div className="block md:hidden">
-                <Card data={data} productId={data._id} accessories={accessories} />
+                <Card
+                  data={data}
+                  productId={data._id}
+                  accessories={accessories}
+                />
               </div>
               <div className="flex items-center space-x-2 mt-4">
                 <div className="flex flex-row bg-red-500 gap-2 p-1">
@@ -427,7 +438,7 @@ const RoomPage = () => {
                 </div>
                 <Link
                   href={{
-                    pathname: '/liveroom',
+                    pathname: "/liveroom",
                   }}
                   passHref
                   onClick={handleJoinLive}
@@ -457,7 +468,7 @@ const RoomPage = () => {
                 <UserReviewPosts />
               </div> */}
             </div>
-            <div className="md:basis-2/3 hidden md:flex flex-col"  >
+            <div className="md:basis-2/3 hidden md:flex flex-col">
               <div className="md:relative flex top-14 mb-16 ml-0 ">
                 <Card data={data} productId={data._id} />
               </div>
@@ -479,162 +490,198 @@ const RoomPage = () => {
         </div>
       </div>
       {openFreeSAmple && (
-        <div className={`fixed top-0 z-[9999] overflow-y-auto right-0 w-[100%] lg:w-[70%] h-full bg-white shadow-lg transition-transform transform ${openFreeSAmple ? "translate-x-0" : "translate-x-full"}`}>
+        <div
+          className={`fixed top-0 z-[9999] overflow-y-auto right-0 w-[100%] lg:w-[70%] h-full bg-white shadow-lg transition-transform transform ${
+            openFreeSAmple ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
           <div className="flex items-center px-[24px] lg:px-[32px] my-5 justify-between">
             <div className="flex flex-col">
-              <h1 className="text-[16px] font-semibold">Free sample products</h1>
-              <p className="text-[12px] text-gray-600 hidden lg:flex font-medium">You can select a maximum of three samples at a time</p>
-
+              <h1 className="text-[16px] font-semibold">
+                Free sample products
+              </h1>
+              <p className="text-[12px] text-gray-600 hidden lg:flex font-medium">
+                You can select a maximum of three samples at a time
+              </p>
             </div>
-            <button className="text-xl px-3 py-1 hover:bg-[#e5e5e5] rounded-full cursor-pointer" onClick={handleClose} >
+            <button
+              className="text-xl px-3 py-1 hover:bg-[#e5e5e5] rounded-full cursor-pointer"
+              onClick={handleClose}
+            >
               X
             </button>
           </div>
           <div className="px-[24px] lg:px-[32px]">
             <div className="flex  justify-between">
               <div className="flex  items-center gap-4">
-                {
-                  selectedSamples && selectedSamples?.length > 0 && (
-                    selectedSamples.map((item) => {
-
-                      return (
-                        <div className="max-w-[130px]" >
-                          <div
-                            className="cursor-pointer"
-
-                          >
-                            <div className="flex flex-col ">
-                              <div className="lg:mb-[10px] ">
-                                <Image
-                                  src={item.images[0]}
-                                  width={200}
-                                  height={130}
-                                  alt={item.productTitle}
-                                  className="w-[200px] h-[70px]"
-                                />
-                              </div>
-                              <div onClick={() => removeItem(item)} className="h-[20px] flex items-center justify-center  absolute w-[20px] rounded-full bg-white">
-                                <p>X</p>
-                              </div>
-                              <h2 className="text-[#333333] text-[14px] hover:underline line-clamp-1">
-                                {item.productTitle}
-                              </h2>
+                {selectedSamples &&
+                  selectedSamples?.length > 0 &&
+                  selectedSamples.map((item) => {
+                    return (
+                      <div className="max-w-[130px]">
+                        <div className="cursor-pointer">
+                          <div className="flex flex-col ">
+                            <div className="lg:mb-[10px] ">
+                              <Image
+                                src={item.images[0]}
+                                width={200}
+                                height={130}
+                                alt={item.productTitle}
+                                className="w-[200px] h-[70px]"
+                              />
                             </div>
+                            <div
+                              onClick={() => removeItem(item)}
+                              className="h-[20px] flex items-center justify-center  absolute w-[20px] rounded-full bg-white"
+                            >
+                              <p>X</p>
+                            </div>
+                            <h2 className="text-[#333333] text-[14px] hover:underline line-clamp-1">
+                              {item.productTitle}
+                            </h2>
                           </div>
                         </div>
-                      )
-                    })
-                  )
-                }
+                      </div>
+                    );
+                  })}
               </div>
-              {
-                selectedSamples && selectedSamples?.length > 0 && (
-                  <div className="lg:max-w-[250px]  ">
-                    <button
-                      onClick={handleBuySamples}
-                      className={`bg-black hover:bg-gray-900 text-white px-4 w-full sm:h-11 h-9 rounded-full transition duration-300`}
-                    >
-                      <p className="flex gap-2">
-                        Buy <span className="lg:flex hidden">Samples</span>
-                      </p>
-                    </button>
-                  </div>
-                )
-              }
-
+              {selectedSamples && selectedSamples?.length > 0 && (
+                <div className="lg:max-w-[250px]  ">
+                  <button
+                    onClick={handleBuySamples}
+                    className={`bg-black hover:bg-gray-900 text-white px-4 w-full sm:h-11 h-9 rounded-full transition duration-300`}
+                  >
+                    <p className="flex gap-2">
+                      Buy <span className="lg:flex hidden">Samples</span>
+                    </p>
+                  </button>
+                </div>
+              )}
             </div>
             <div className="flex overflow-x-scroll lg:overflow-x-hidden items-center lg:gap-2 gap-2 mt-6">
-              <div onClick={() => setCategoryFilterOpen(!categoryFilterOpen)} className={`${commonClasses} text-[14px] flex items-center gap-2 font-semibold rounded-full bg-gray-100`}>
+              <div
+                onClick={() => setCategoryFilterOpen(!categoryFilterOpen)}
+                className={`${commonClasses} text-[14px] flex items-center gap-2 font-semibold rounded-full bg-gray-100`}
+              >
                 <p>{selectedCategory}</p>
-                <Image loading="lazy"
+                <Image
+                  loading="lazy"
                   src="/icons/downarrow.svg"
                   width={40}
                   height={40}
-                  className={`w-4 h-4 mt-1 block  ${categoryFilterOpen && "rotate-90"} -rotate-90`}
+                  className={`w-4 h-4 mt-1 block  ${
+                    categoryFilterOpen && "rotate-90"
+                  } -rotate-90`}
                   alt="arrow icon"
                 />
-                {
-                  categoryFilterOpen && allCategories && allCategories.length > 0 && (
-                    <div className={`w-[300px] cursor-pointer absolute ${selectedSamples.length > 0 ? "top-64" : "top-40"}  z-50 h-fit bg-white border border-gray-200 rounded-lg`}>
-                      <p onClick={() => handleCategoryFilter("All Categories")} className="flex text-[14px] font-semibold px-4 py-2">All Categories</p>
-                      {
-                        allCategories.map((item) => {
-                          return (
-                            <p onClick={() => handleCategoryFilter(item.name)} className="flex cursor-pointer text-[14px] font-semibold px-4 py-2">{item.name}</p>
-                          )
-                        })
-                      }
+                {categoryFilterOpen &&
+                  allCategories &&
+                  allCategories.length > 0 && (
+                    <div
+                      className={`w-[300px] cursor-pointer absolute ${
+                        selectedSamples.length > 0 ? "top-64" : "top-40"
+                      }  z-50 h-fit bg-white border border-gray-200 rounded-lg`}
+                    >
+                      <p
+                        onClick={() => handleCategoryFilter("All Categories")}
+                        className="flex text-[14px] font-semibold px-4 py-2"
+                      >
+                        All Categories
+                      </p>
+                      {allCategories.map((item) => {
+                        return (
+                          <p
+                            onClick={() => handleCategoryFilter(item.name)}
+                            className="flex cursor-pointer text-[14px] font-semibold px-4 py-2"
+                          >
+                            {item.name}
+                          </p>
+                        );
+                      })}
                     </div>
-                  )
-                }
-
+                  )}
               </div>
-              <div onClick={() => setColorFilterOpen(!ColorfilterOpen)} className={`${commonClasses} text-[14px] flex items-center gap-2 font-semibold rounded-full bg-gray-100`}>
+              <div
+                onClick={() => setColorFilterOpen(!ColorfilterOpen)}
+                className={`${commonClasses} text-[14px] flex items-center gap-2 font-semibold rounded-full bg-gray-100`}
+              >
                 <p>{selectedColor}</p>
-                <Image loading="lazy"
+                <Image
+                  loading="lazy"
                   src="/icons/downarrow.svg"
                   width={40}
                   height={40}
-                  className={`w-4 h-4 mt-1 block  ${ColorfilterOpen && "rotate-90"} -rotate-90`}
+                  className={`w-4 h-4 mt-1 block  ${
+                    ColorfilterOpen && "rotate-90"
+                  } -rotate-90`}
                   alt="arrow icon"
                 />
-                {
-                  ColorfilterOpen && allColors && allColors.length > 0 && (
-                    <div className={`w-[300px] cursor-pointer absolute ${selectedSamples.length > 0 ? "top-64" : "top-40"}  z-50 h-fit bg-white border border-gray-200 rounded-lg`}>
-                      <p onClick={() => handleColorFilter("All Colors")} className="flex text-[14px] font-semibold px-4 py-2">All Colors</p>
-                      {
-                        allColors.map((item) => {
-                          return (
-                            <p onClick={() => handleColorFilter(item)} className="flex cursor-pointer text-[14px] font-semibold px-4 py-2">{item}</p>
-                          )
-                        })
-                      }
-                    </div>
-                  )
-                }
-
+                {ColorfilterOpen && allColors && allColors.length > 0 && (
+                  <div
+                    className={`w-[300px] cursor-pointer absolute ${
+                      selectedSamples.length > 0 ? "top-64" : "top-40"
+                    }  z-50 h-fit bg-white border border-gray-200 rounded-lg`}
+                  >
+                    <p
+                      onClick={() => handleColorFilter("All Colors")}
+                      className="flex text-[14px] font-semibold px-4 py-2"
+                    >
+                      All Colors
+                    </p>
+                    {allColors.map((item) => {
+                      return (
+                        <p
+                          onClick={() => handleColorFilter(item)}
+                          className="flex cursor-pointer text-[14px] font-semibold px-4 py-2"
+                        >
+                          {item}
+                        </p>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
-              <div onClick={() => handleRemoveAllFilters()} className={`${commonClasses} text-[14px] cursor-pointer flex items-center gap-2 font-semibold rounded-full bg-gray-100`}>
+              <div
+                onClick={() => handleRemoveAllFilters()}
+                className={`${commonClasses} text-[14px] cursor-pointer flex items-center gap-2 font-semibold rounded-full bg-gray-100`}
+              >
                 <p>Remove all filters</p>
               </div>
             </div>
 
             <div className="grid lg:grid-cols-4 grid-cols-2 gap-y-4 gap-4 mt-10">
-              {
-                FilteredProducts && FilteredProducts.length > 0 && (
-                  FilteredProducts.map((item) => (
-                    <div className="" >
-                      <div
-                        className="cursor-pointer"
-
-                      >
-                        <div className="flex flex-col ">
-                          <div className="lg:mb-[10px] ">
-                            <Image
-                              src={item.images[0]}
-                              width={200}
-                              height={130}
-                              alt={item.productTitle}
-                              className="w-full h-[150px] lg:h-[230px]"
-                            />
-                          </div>
-                          {
-                            selectedSamples && selectedSamples.length < 3 && (
-                              <input type="checkbox" className="absolute" checked={selectedSamples.includes(item)} onChange={() => handleChecked(item)} />
-                            )
-                          }
-                          <h2 className="text-[#333333] text-[16px] font-medium hover:underline line-clamp-1">
-                            {item.productTitle}
-                          </h2>
+              {FilteredProducts &&
+                FilteredProducts.length > 0 &&
+                FilteredProducts.map((item) => (
+                  <div className="">
+                    <div className="cursor-pointer">
+                      <div className="flex flex-col ">
+                        <div className="lg:mb-[10px] ">
+                          <Image
+                            src={item.images[0]}
+                            width={200}
+                            height={130}
+                            alt={item.productTitle}
+                            className="w-full h-[150px] lg:h-[230px]"
+                          />
                         </div>
+                        {selectedSamples && selectedSamples.length < 3 && (
+                          <input
+                            type="checkbox"
+                            className="absolute"
+                            checked={selectedSamples.includes(item)}
+                            onChange={() => handleChecked(item)}
+                          />
+                        )}
+                        <h2 className="text-[#333333] text-[16px] font-medium hover:underline line-clamp-1">
+                          {item.productTitle}
+                        </h2>
                       </div>
                     </div>
-                  ))
-                )
-              }
+                  </div>
+                ))}
             </div>
           </div>
-
         </div>
       )}
     </>

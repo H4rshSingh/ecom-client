@@ -124,7 +124,8 @@ export default function NewMainSlider({ initialData }) {
         }}
       >
         <div className={`${navigationVisible ? "block" : "hidden"}`}>
-          <Image loading="lazy"
+          <Image
+            loading="lazy"
             src="/icons/backarrowblack.svg"
             width={30}
             height={30}
@@ -141,7 +142,7 @@ export default function NewMainSlider({ initialData }) {
                 className={`relative  sm:mt-0 group h-[78vh]  lg:-translate-x-[5px] -translate-x-[10px] translate-r md:translate-x-0`}
               >
                 {data.link ? (
-                  <Link href={`https://ayatrio.com//category/${data?.link}`}>
+                  <Link href={`https://ayatrio.com/collection/${data?.link}`}>
                     <Image
                       src={
                         windowWidth > 600
@@ -152,11 +153,11 @@ export default function NewMainSlider({ initialData }) {
                       alt={data.imgTitle || "Swiper image"}
                       priority
                       className="object-fill  px-[10px]  swiper-slide  lg:px-[0px] w-full"
-                    // objectFit="cover"
+                      // objectFit="cover"
                     />
                   </Link>
                 ) : (
-                  <Image 
+                  <Image
                     src={
                       windowWidth > 600
                         ? data?.desktopImgSrc
@@ -207,7 +208,8 @@ export default function NewMainSlider({ initialData }) {
                                   </p>
                                 </div>
                                 <div className="absolute top-0 right-0 flex items-center justify-end h-full">
-                                  <Image loading="lazy"
+                                  <Image
+                                    loading="lazy"
                                     className="flex mx-1 rotate-90"
                                     src="/icons/uparrow.svg"
                                     height={20}
@@ -227,7 +229,8 @@ export default function NewMainSlider({ initialData }) {
           );
         })}
         <div className={`${navigationVisible ? "block" : "hidden"}`}>
-          <Image loading="lazy"
+          <Image
+            loading="lazy"
             src="/icons/rightarrowblack.svg"
             width={30}
             height={30}

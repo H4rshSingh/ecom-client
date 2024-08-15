@@ -7,7 +7,7 @@ const SiteNavigationElement = async () => {
   const siteNavigationElementListSchema = {
     "@context": "http://schema.org",
     "@type": "ItemList",
-    itemListElement: categories.map((category, index) => {
+    itemListElement: categories?.map((category, index) => {
       return {
         "@type": "SiteNavigationElement",
         position: index + 1,
@@ -16,7 +16,7 @@ const SiteNavigationElement = async () => {
         url: `https://www.ayatrio.com/${category.name.replace(
           / /g,
           "-"
-        )}/category/all`,
+        )}/collection/all`,
       };
     }),
   };

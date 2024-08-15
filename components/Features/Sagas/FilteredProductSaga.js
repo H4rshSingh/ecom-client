@@ -10,7 +10,7 @@ function* fetchFilteredProduct(action) {
 
     console.log(totalPages);
 
-    if (action.payload.heading === "category" && !action.payload.cat) {
+    if (action.payload.heading === "collection" && !action.payload.cat) {
 
       let apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/fetchProductsByCategory/${action.payload.parentCategoryVar}?page=${currentPage}&itemsPerPage=${itemsPerPage}`;
 

@@ -182,7 +182,7 @@ export const RoomsPage = ({ params }) => {
                     href={`/${roomMain.mainImage.productCategory.replace(
                       / /g,
                       "-"
-                    )}/category/all`}
+                    )}/collection/all`}
                     src={roomMain.mainImage.imgSrc}
                     alt={`Image  of Children`}
                     layout="fill"
@@ -208,7 +208,7 @@ export const RoomsPage = ({ params }) => {
                         href={`/${roomMain.twoGrid.twoGridRooms[0].productCategory.replace(
                           / /g,
                           "-"
-                        )}/category/all`}
+                        )}/collection/all`}
                         alt={`Image  of Children`}
                         layout="fill"
                         width={1000}
@@ -223,7 +223,7 @@ export const RoomsPage = ({ params }) => {
                         href={`/${roomMain.twoGrid.twoGridRooms[1].productCategory.replace(
                           / /g,
                           "-"
-                        )}/category/all`}
+                        )}/collection/all`}
                         alt={`Image  of Children`}
                         s
                         layout="fill"
@@ -269,7 +269,7 @@ export const RoomsPage = ({ params }) => {
                                 href={`/${room?.productCategory.replace(
                                   / /g,
                                   "-"
-                                )}/category/all`}
+                                )}/collection/all`}
                                 src={room.imgSrc}
                                 alt={`Image of Children`}
                                 width={1000}

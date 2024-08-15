@@ -1,8 +1,9 @@
+import { checkKeyword } from "@/actions/checkKeyword";
 import { getProductByProductId } from "@/actions/getProductByProductId";
 import ProductPage from "@/components/ProductPage/ProductPage";
 import { getAggregateRating } from "@/utils/getAggregateRating";
 import { BreadcrumbJsonLd, ProductJsonLd } from "next-seo";
-import { notFound, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export const generateMetadata = async ({ params }) => {
   const productId = params.subtitle;
@@ -42,12 +43,19 @@ export const generateMetadata = async ({ params }) => {
 const Page = async ({ params }) => {
   const productId = params.subtitle;
 
-  if (params.title === "category") {
-    notFound();
+  if (productId === "collection") {
+    return redirect(`/${params.title}/collection/all`);
   }
 
-  if (productId === "category") {
-    return redirect(`/${params.title}/category/all`);
+  if (productId === "subcollection") {
+    const keywordDetails = await checkKeyword(params.title.replace(/-/g, " "));
+    const parentCategory = keywordDetails?.parentCategory;
+
+    if (!parentCategory) {
+      return redirect("/");
+    }
+
+    return redirect(`/${params.title}/subcollection/${parentCategory}`);
   }
 
   if (productId?.endsWith(".html") || productId?.endsWith(".svg")) {
@@ -55,10 +63,6 @@ const Page = async ({ params }) => {
   }
 
   const product = await getProductByProductId(productId);
-
-  if (product?.error) {
-    notFound();
-  }
 
   if (!product) {
     return null;

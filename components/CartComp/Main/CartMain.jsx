@@ -302,6 +302,28 @@ const CartMain = () => {
     }
   };
 
+  const handleServiceDelete = async (productId, serviceId) => {
+    const postUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/service/deleteServiceFromProduct`;
+    const postData = {
+      deviceId: id,
+      productId: productId,
+      serviceId: serviceId,
+    };
+
+    try {
+      const response = await axios.post(postUrl, postData);
+      if (response.status === 200) {
+        fetchData();
+        setCartStaus("succeeded");
+      }
+    } catch (error) {
+      // setCartStaus("failed");
+      console.error("Error while deleting service:", error);
+    }
+  }
+
+    
+
   const handleAccessoriesIncrease = (productId, accessoryId, quantity) => {
     let Quant = quantity + 1;
     console.log(Quant);
@@ -669,6 +691,7 @@ const CartMain = () => {
                         handleServiceDecrease={handleServiceDecrease}
                         handleAccessoriesIncrease={handleAccessoriesIncrease}
                         handleAccessoriesDecrease={handleAccessoriesDecrease}
+                        handleServiceDelete={handleServiceDelete}
                       />
                     );
                   })}

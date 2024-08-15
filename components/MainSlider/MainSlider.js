@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SwiperSlide } from "swiper/react";
 
-const MainSlider = ({ initialData: { result: sliderData } }) => {
+const MainSlider = ({ sliderData }) => {
   const swiperRef = useRef(null);
 
   const [windowWidth, setWindowWidth] = useState(600);
@@ -123,7 +123,7 @@ const MainSlider = ({ initialData: { result: sliderData } }) => {
           position: "relative",
         }}
       >
-        {sliderData.map((data) => {
+        {sliderData?.map((data) => {
           return (
             <>
               <SwiperSlide>

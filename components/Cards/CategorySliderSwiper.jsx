@@ -59,7 +59,7 @@ const CategorySliderSwiper = ({ categories }) => {
           return (
             <swiper-slide key={idx}>
               <Link
-                href={`/${curElement.name.replace(/ /g, "-")}/category/all`}
+                href={`/${curElement.name.replace(/ /g, "-")}/collection/all`}
               >
                 <div className="flex flex-col  items-center ">
                   <div className="mb-[12px] ">

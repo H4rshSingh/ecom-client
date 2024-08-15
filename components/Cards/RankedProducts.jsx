@@ -7,7 +7,9 @@ import {
   selectRecommendationStatus,
   selectRecommendedProduct,
 } from "../Features/Slices/recommendationSlice";
-import RankedProductsSlider from "./RankedProductsSlider";
+import dynamic from "next/dynamic";
+const RankedProductsSlider = dynamic(() => import("./RankedProductsSlider"));
+// import RankedProductsSlider from "./RankedProductsSlider";
 
 const RankedProducts = () => {
   const [data, setData] = useState([]);
@@ -31,11 +33,11 @@ const RankedProducts = () => {
     dispatch({ type: "FETCH_RANKED_DATA", payload: "rankedProducts" });
   }, []);
 
-  useEffect(() => {
-    if (rankedData.length === 0) {
-      dispatch({ type: "FETCH_RANKED_DATA", payload: "rankedProducts" });
-    }
-  }, [rankedData]);
+  // useEffect(() => {
+  //   if (rankedData.length === 0) {
+  //     dispatch({ type: "FETCH_RANKED_DATA", payload: "rankedProducts" });
+  //   }
+  // }, [rankedData]);
 
   useEffect(() => {
     if (rankedData.length > 0) {
@@ -49,7 +51,8 @@ const RankedProducts = () => {
       );
       setData(data);
     }
-  }, [rankedData, recommended]);
+  }, []);
+  // }, [rankedData, recommended]);
 
   return (
     <>

@@ -49,6 +49,7 @@ const Tabs = ({
   firstGrid,
   secondGrid,
   type,
+  isSubcategoryPage,
 }) => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -656,7 +657,13 @@ const Tabs = ({
   console.log(subCategory);
 
   useEffect(() => {
-    if (pathname.split("/")[3] !== "all") {
+    if (isSubcategoryPage) {
+      const filtered = subCategory?.filter(
+        (sub) => sub.name === pathname.split("/")[1].replace(/-/g, " ")
+      );
+
+      setSubCategory(filtered);
+    } else if (pathname.split("/")[3] !== "all") {
       const filtered = subCategory?.filter(
         (data) => data.name === pathname.split("/")[3].replace(/-/g, " ")
       );
@@ -686,8 +693,10 @@ const Tabs = ({
         <div className="flex flex-col overflow-hidden">
           <div className="md:mt-36 mt-10" />
           <h1 className="Blinds font-semibold text-2xl pb-[20px] lg:pt-[30px] capitalize">
-            {pathname.split("/")[3] === "all" && <p>{heading}</p>}
-            {pathname.split("/")[3] !== "all" && (
+            {!isSubcategoryPage && pathname.split("/")[3] === "all" && (
+              <p>{heading}</p>
+            )}
+            {!isSubcategoryPage && pathname.split("/")[3] !== "all" && (
               <p>
                 {pathname
                   .split("/")[3]
@@ -695,8 +704,12 @@ const Tabs = ({
                   .replace(/percent/g, "%")}
               </p>
             )}
+            {isSubcategoryPage && (
+              <p>{pathname.split("/")[1].replace(/-/g, " ")}</p>
+            )}
           </h1>
           <div className="flex items-center">
+            {console.log({ subCategory })}
             {subCategory ? (
               <div className="group flex flex-row items-center justify-start gap-2 mb-4">
                 <SubcategorySlider
@@ -710,6 +723,7 @@ const Tabs = ({
               parentCategory &&
               (parentCategory === "offers" && offerCategoryData ? (
                 <div className="group flex flex-row items-center justify-start gap-2 mb-4">
+                  {console.log({ offerCategoryData, subCategory })}
                   <OfferSlider
                     offerCategoryData={offerCategoryData}
                     setSelectedOfferCategory={setSelectedOfferCategory}

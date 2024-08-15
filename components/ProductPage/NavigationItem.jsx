@@ -36,7 +36,7 @@ const NavigationItem = ({ product: data }) => {
       ) : (
         <>
           <Link href="/">
-            <span className="hover:text-gray-600 cursor-pointer ">Home</span>
+            <span className="hover:text-gray-600 cursor-pointer">Home</span>
           </Link>
           <Image
             src="/icons/backarrowRevarce.svg"
@@ -47,7 +47,7 @@ const NavigationItem = ({ product: data }) => {
           />
         </>
       )}
-      <Link href={`/${data?.category?.replace(/ /g, "-")}/category/all`}>
+      <Link href={`/${data?.category?.replace(/ /g, "-")}/collection/all`}>
         <span className="hover:text-gray-500 cursor-pointer line-clamp-1">
           {data?.category}
         </span>
@@ -60,10 +60,10 @@ const NavigationItem = ({ product: data }) => {
         className="opacity-100 h-[8px]"
       />
       <Link
-        href={`/${data?.category?.replace(
+        href={`/${data?.subcategory?.replace(
           / /g,
           "-"
-        )}/category/${data?.subcategory?.replace(/ /g, "-")}`}
+        )}/subcategory/${data?.category?.replace(/ /g, "-")}`}
       >
         <span className="hover:text-gray-500 cursor-pointer line-clamp-1">
           {data?.subcategory}

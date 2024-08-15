@@ -2,7 +2,7 @@ import axios from "axios";
 import Link from "next/link";
 import React from "react";
 const Phone = async () => {
-  const fetchCategory =  async () => {
+  const fetchCategory = async () => {
     try {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/trendingCategories`
@@ -44,11 +44,11 @@ const Phone = async () => {
       </p>
 
       <p className=" w-5/6 font-semibold text-md sm:text-xl  py-4">
-        {categories.map((category) => (
+        {categories?.map((category) => (
           <span key={category.id}>
             <span className="cursor-pointer hover:underline">
               <Link
-                href={`/category/${category.name.replace(/ /g, "-")}/all`}
+                href={`/${category.name.replace(/ /g, "-")}/collection/all`}
               >
                 {category.name}
               </Link>

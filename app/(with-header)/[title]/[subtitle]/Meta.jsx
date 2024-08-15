@@ -25,9 +25,16 @@ import {
   selectDemandTypeProductsStatus,
 } from "@/components/Features/Slices/demandTypeProductsSlice";
 
-const ProductPage = ({ params }) => {
+const ProductPage = ({
+  params,
+  isSubcategoryPage,
+  initialParentCategory,
+  initialSubcategory,
+}) => {
   // const [parentCategory, setParentCategory] = useState(params.parentCategory.replace(/-/g, " "))
-  const parentCategory = params.title.replace(/-/g, " ");
+  const parentCategory =
+    initialParentCategory || params.title.replace(/-/g, " ");
+
   const subtitle = params.subtitle.replace(/-/g, " ");
   // console.log(parentCategory.replace(/-/g, " "))
   let queryString;
@@ -53,8 +60,9 @@ const ProductPage = ({ params }) => {
 
   const pathname = usePathname();
   const [type, setType] = useState(
-    params.cat.replace(/-/g, " ").replace(/percent/g, "%")
+    initialSubcategory || params.cat.replace(/-/g, " ").replace(/percent/g, "%")
   );
+
   const [isFilterVisible, setIsFilterVisible] = useState(true);
   const [filteredProducts, setFilteredProducts] = useState([]);
 
@@ -194,7 +202,8 @@ const ProductPage = ({ params }) => {
         }
       };
       fetchVeProducts();
-    } else if (subtitle === "category" && type === "all") {
+    } else if (type === "all") {
+      console.log("test", type, parentCategory);
       handleSetItem("Products");
       dispatch({
         type: "FETCH_FILTER_PRODUCTS",
@@ -323,7 +332,7 @@ const ProductPage = ({ params }) => {
     dispatch({
       type: "FETCH_FILTER_PRODUCTS",
       payload: {
-        heading: "category",
+        heading: "collection",
         parentCategoryVar: parentCategory.replace(/-/g, " "),
       },
     });
@@ -341,7 +350,7 @@ const ProductPage = ({ params }) => {
   const [firstGrid, setFirstGrid] = useState(null);
   const [secondGrid, setSecondGrid] = useState(null);
   useEffect(() => {
-    if (subtitle === "category" && type === "all" && category) {
+    if (subtitle === "collection" && type === "all" && category) {
       if (category.firstGrid) {
         setFirstGrid(category.firstGrid);
       }
@@ -354,6 +363,7 @@ const ProductPage = ({ params }) => {
     <>
       {/* ( */}
       <div>
+        {console.log({ test: category })}
         <Tabproduct
           filteredProductData={
             parentCategory === "virtualexperience"
@@ -390,6 +400,7 @@ const ProductPage = ({ params }) => {
           onPageChange={handlePageChange}
           firstGrid={firstGrid}
           secondGrid={secondGrid}
+          isSubcategoryPage={isSubcategoryPage}
         />
       </div>
       {/* ) : (

@@ -29,6 +29,7 @@ import {
   selectColor,
   setColor,
 } from "@/components/Features/Slices/productColorSlice";
+import AvailableServicesSlider from "@/components/Cards/AvailableServicesSlider";
 
 const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
   const quantity = useSelector(selectQuantity);
@@ -466,11 +467,14 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
       if (prevSelectedServices.some((s) => s.name === service.name)) {
         return prevSelectedServices.filter((s) => s.name !== service.name);
       } else {
-        return [...prevSelectedServices, service];
+        const modifiedService = {
+          ...service,
+          quantity: 1,
+        };
+        return [...prevSelectedServices, modifiedService];
       }
     });
   };
-
   const handleAccessoriesChange = (product) => {
     setSelectedAccessories((prevSelectedAccessories) => {
       if (prevSelectedAccessories.some((s) => s._id === product._id)) {
@@ -500,15 +504,16 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
   const handleBuy = async () => {
     document.body.style.overflow = "auto";
     try {
+      console.log("harsh clicked ");
       // Validate quantity, productId, and deviceId
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart`,
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/cart/service/addServicesToProduct`,
         {
           deviceId: localStorage.getItem("deviceId"),
           productId: productId,
-          quantity: 1,
+          // quantity: 1,
           selectedServices,
-          selectedAccessories,
+          // selectedAccessories,
         }
       );
       if (response.status === 200) {
@@ -608,6 +613,8 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
   }, [data?.category]);
 
   const handleGoToShoppingBag = () => {
+    // console.log("harsh clicked ", selectedServices);c
+    handleBuy();
     router.push("/checkout");
     document.body.style.overflow = "auto";
   };
@@ -1996,11 +2003,126 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                               )}
                             </div>
                           </div>
-                          <div className="w-full border-t mt-[155px] pb-28 h-[500px] overflow-y-auto">
+
+                          <div className="w-full border-t mt-[155px]  ">
+                            {/* {categoryDetails &&
+                              categoryDetails.availableServices &&
+                              categoryDetails.availableServices.length > 0 && (
+                                <div className="w-full mb-4">
+                                  <h2 className="md:text-[24px] text-[18px] font-bold mt-2">
+                                    Services
+                                  </h2>
+                                  <AvailableServicesSlider
+                                    availableServices={
+                                      categoryDetails.availableServices
+                                    }
+                                    selectedServices={selectedServices}
+                                    handleServiceChange={handleServiceChange}
+                                  />
+
+                                  <button onClick={handleBuy} className="bg-[#0152be] p-1.5 rounded-full max-w-fit self-center md:mr-10">
+                                    Add Services
+                                  </button>
+                                </div>
+                              )} */}
+                            {avaliableServices &&
+                              avaliableServices.length > 0 && (
+                                <div className="flex items-center justify-between">
+                                  <h2 className="md:text-[24px] text-[18px] font-bold mt-2">
+                                    Add other services
+                                  </h2>
+                                  <p className="text-[#111111] text-[14px] mr-2 cursor-pointer hover:underline font-medium">
+                                    View More
+                                  </p>
+                                </div>
+                              )}
+                            <div className="">
+                              {avaliableServices &&
+                                avaliableServices.length > 0 &&
+                                avaliableServices.map((service, idx) => {
+                                  const isSelected = selectedServices.some(
+                                    (s) => s._id === service._id
+                                  );
+                                  const selectedService = selectedServices.find(
+                                    (s) => s._id === service._id
+                                  );
+
+                                  return (
+                                    <div
+                                      key={idx}
+                                      className={`flex items-center w-full justify-between mt-4 border p-3 cursor-pointer hover:border-black rounded-md ${
+                                        isSelected ? "border-black" : ""
+                                      }`}
+                                    >
+                                      <div className="flex flex-col max-w-[200px] items-start gap-1">
+                                        <p className="text-[14px] font-semibold text-[#484848] flex gap-4">
+                                          <Image
+                                            loading="lazy"
+                                            src={"/icons/instalation.svg"}
+                                            width={20}
+                                            height={20}
+                                            alt="installation icon"
+                                            className="installation icon"
+                                          />{" "}
+                                          {service?.name}
+                                        </p>
+                                        <p className="text-[14px] font-semibold text-[#484848]">
+                                          <span className="text-[10px] font-bold">
+                                            Rs
+                                          </span>{" "}
+                                          {service?.cost}/{service?.unitType}
+                                        </p>
+                                      </div>
+                                      {isSelected && (
+                                        <div className="flex items-center justify-between">
+                                          <div className="rounded-3xl w-24 border border-gray-400 flex justify-between items-center">
+                                            <button
+                                              onClick={() =>
+                                                handleServiceDecrease(
+                                                  service._id
+                                                )
+                                              }
+                                              className="hover:bg-zinc-200 w-9 h-9 rounded-full flex items-center justify-center focus:outline-none"
+                                            >
+                                              -
+                                            </button>
+                                            <p className="font-bold text-center mx-2">
+                                              {selectedService.quantity}
+                                            </p>
+                                            <button
+                                              onClick={() =>
+                                                handleServiceIncrease(
+                                                  service._id
+                                                )
+                                              }
+                                              className="hover:bg-zinc-200 w-9 h-9 rounded-full flex items-center justify-center focus:outline-none"
+                                            >
+                                              +
+                                            </button>
+                                          </div>
+                                        </div>
+                                      )}
+                                      <span>
+                                        Rs.{" "}
+                                        {selectedService?.quantity *
+                                          service?.cost || 0}
+                                      </span>
+                                      <input
+                                        type="checkbox"
+                                        onChange={() =>
+                                          handleServiceChange(service)
+                                        }
+                                        checked={isSelected}
+                                        className="form-checkbox h-4 w-4 text-blue-600 border-gray-300"
+                                      />
+                                    </div>
+                                  );
+                                })}
+                            </div>
                             <h2 className="md:text-[24px] text-[18px] font-bold mt-2">
                               Similar products
                             </h2>
-                            <div className="">
+                            <div className="pb-28 h-[500px] border-t overflow-y-auto">
                               {categoryProducts &&
                               categoryProducts.length > 0 ? (
                                 categoryProducts.map((product) => (

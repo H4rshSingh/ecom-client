@@ -12,7 +12,7 @@ const Card = ({ category, products, colors }) => {
         >
           <div>
             <h2 className="text-sm">Bestseller</h2>
-            <Link href={`/${category}/category/all`}>
+            <Link href={`/${category}/collection/all`}>
               <h2 className="text-xl font-semibold">{category}</h2>
             </Link>
           </div>
@@ -36,9 +36,7 @@ const Card = ({ category, products, colors }) => {
         <div className="p-4">
           {products.map((item, index) => (
             <div key={index} className="flex items-center mb-4 py-2 gap-4">
-              <div
-                className="text-2xl font-bold  text-center max-w-6 w-full"
-              >
+              <div className="text-2xl font-bold  text-center max-w-6 w-full">
                 {index === 0 && (
                   <Image
                     src={`/batch/firstbatch.svg`}

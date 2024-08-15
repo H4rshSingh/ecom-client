@@ -11,11 +11,21 @@ import axios from "axios";
 import { getOffer } from "@/actions/getOffer";
 
 export async function generateMetadata({ params }) {
-  const category = await getCategoryByName(params.title.replace(/-/g, " "));
-  const subcategories = category?.subcategories;
-
   const isCategoryPage = params.title !== "offers" && params.cat === "all";
   const isOfferPage = params.title === "offers";
+
+  const isSubcategoryPage =
+    !isCategoryPage && !isOfferPage && params.subtitle === "subcollection";
+
+  const categoryName = isSubcategoryPage
+    ? params.cat.replace(/-/g, " ")
+    : params.title.replace(/-/g, " ");
+
+  const subCategory = params.title.replace(/-/g, " ");
+
+  const category = await getCategoryByName(categoryName);
+
+  const subcategories = category?.subcategories;
 
   if (isCategoryPage) {
     return {
@@ -58,7 +68,7 @@ export async function generateMetadata({ params }) {
   }
 
   const currentSubcategory = subcategories?.find(
-    (subcategory) => subcategory.name === params.cat.replace(/-/g, " ")
+    (subcategory) => subcategory.name === subCategory
   );
 
   return {
@@ -85,19 +95,31 @@ export async function generateMetadata({ params }) {
 
 const page = async ({ params }) => {
   if (params.title === "offers") {
-    return <ProductPage params={params} />;
+    return <ProductPage params={params} isSubcategoryPage={false} />;
   }
 
   const isCategoryPage = params.title !== "offers" && params.cat === "all";
   const isOfferPage = params.title === "offers";
 
-  const category = await getCategoryByName(params.title.replace(/-/g, " "));
+  const isSubcategoryPage =
+    !isCategoryPage && !isOfferPage && params.subtitle === "subcollection";
+
+  const categoryName = isSubcategoryPage
+    ? params.cat.replace(/-/g, " ")
+    : params.title.replace(/-/g, " ");
+
+  const subCategory = params.title.replace(/-/g, " ");
+
+  const category = await getCategoryByName(categoryName);
 
   const subcategories = category?.subcategories;
 
-  const currentSubcategory = subcategories?.find(
-    (subcategory) => subcategory.name === params.cat.replace(/-/g, " ")
-  );
+  const currentSubcategory = subcategories?.find((subcategory) => {
+    if (isSubcategoryPage)
+      return subcategory.name === params.title.replace(/-/g, " ");
+
+    return subcategory.name === params.cat.replace(/-/g, " ");
+  });
 
   const subcategoriesJsonLd = {
     "@context": "https://schema.org",
@@ -111,15 +133,17 @@ const page = async ({ params }) => {
   };
 
   const categoryProductsResponse = await axios.get(
-    createApiEndpoint(
-      `fetchProductsByCategory/${params.title.replace(/-/g, " ")}`
-    )
+    createApiEndpoint(`fetchProductsByCategory/${categoryName}`)
   );
-  const categoryProducts = categoryProductsResponse.data;
 
-  const subcategoryProducts = categoryProducts?.filter(
-    (product) => product.subcategory === params.cat.replace(/-/g, " ")
-  );
+  const categoryProducts = categoryProductsResponse?.data;
+
+  const subcategoryProducts = categoryProducts?.filter?.((product) => {
+    if (isSubcategoryPage)
+      return product.subcategory === params.title.replace(/-/g, " ");
+
+    return product.subcategory === params.cat.replace(/-/g, " ");
+  });
 
   return (
     <>
@@ -279,7 +303,20 @@ const page = async ({ params }) => {
             />
           );
         })}
-      <ProductPage params={params} />
+      <ProductPage
+        params={params}
+        isSubcategoryPage={isSubcategoryPage}
+        initialParentCategory={
+          isSubcategoryPage
+            ? params.cat.replace(/-/g, " ")
+            : params.title.replace(/-/g, " ")
+        }
+        initialSubcategory={
+          isSubcategoryPage
+            ? subCategory
+            : params.cat.replace(/-/g, " ").replace(/percent/g, "%")
+        }
+      />
     </>
   );
 };

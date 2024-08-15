@@ -51,7 +51,8 @@ const RoomCard = async () => {
               <div
                 className="parent col-start-1 col-end-3 row-start-1  lg:mb-0 row-end-6
               lg:col-start-1 lg:col-end-7 lg:row-start-1 lg:row-end-12 
-            "d
+            "
+                d
               >
                 <Link
                   href={`offers/new/${gallery.items[0].offer
@@ -96,7 +97,7 @@ const RoomCard = async () => {
                         href={`/${gallery?.rooms[0]?.productCategory.replace(
                           / /g,
                           "-"
-                        )}/category/all`}
+                        )}/collection/all`}
                         alt={`Image  of Children`}
                         width={1000}
                         height={338}
@@ -122,7 +123,7 @@ const RoomCard = async () => {
                         href={`/${gallery?.rooms[1]?.productCategory.replace(
                           / /g,
                           "-"
-                        )}/category/all`}
+                        )}/collection/all`}
                         width={1000}
                         height={338}
                         labelData={gallery?.rooms[1]?.children}
@@ -146,7 +147,7 @@ const RoomCard = async () => {
                         href={`/${gallery?.rooms[2]?.productCategory.replace(
                           / /g,
                           "-"
-                        )}/category/all`}
+                        )}/collection/all`}
                         width={1000}
                         height={338}
                         labelData={gallery?.rooms[2]?.children}
@@ -169,7 +170,7 @@ const RoomCard = async () => {
                         href={`/${gallery?.rooms[3]?.productCategory.replace(
                           / /g,
                           "-"
-                        )}/category/all`}
+                        )}/collection/all`}
                         alt={`Image  of Children`}
                         width={1000}
                         height={338}

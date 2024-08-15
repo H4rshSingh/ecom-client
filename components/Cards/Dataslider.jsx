@@ -2,7 +2,10 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import "./styles.css";
 import { viewItemList } from "@/tag-manager/events/view_item_list";
-import DataSliderSwiper from "./DataSliderSwiper";
+
+import dynamic from "next/dynamic";
+const DataSliderSwiper = dynamic(() => import("./DataSliderSwiper"))
+// import DataSliderSwiper from "./DataSliderSwiper";
 
 const Dataslider = ({ category, data, sliderIndex }) => {
   const [productData, setProductData] = useState([]);

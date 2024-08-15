@@ -1,14 +1,8 @@
 import { useRef, useState } from "react";
-import PopUp from "../Reviews/PopUp";
 import "./styles.css";
 import BlogRelatedProductsSlider from "./BlogRelatedProductsSlider";
 
 const BlogRecommendedProducts = ({ relatedProducts, title }) => {
-  const [isPopupVisible, setPopupVisible] = useState(false);
-
-  const closePopup = () => {
-    setPopupVisible(false);
-  };
   const swiper1Ref = useRef(null);
 
   const filteredProducts = relatedProducts?.filter(
@@ -33,7 +27,6 @@ const BlogRecommendedProducts = ({ relatedProducts, title }) => {
             ></div>
           </div>
         </div>
-        <PopUp isPopupVisible={isPopupVisible} closePopup={closePopup} />
         <BlogRelatedProductsSlider data={filteredProducts} />
       </div>
     </div>

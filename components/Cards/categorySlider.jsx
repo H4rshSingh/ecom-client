@@ -19,7 +19,7 @@ const CategoriesSlider = async () => {
   return (
     <div className="flex items-center justify-start">
       <div className=" pt-[2rem] lg:pt-[52px] pl-[15px]  overflow-x-auto  relative w-full">
-        {categories.length > 0 && (
+        {categories?.length > 0 && (
           <div className="flex flex-row group items-center justify-end gap-2 lg:mb-4">
             <div className="back rounded-full   group-hover:opacity-60  opacity-0  absolute left-5 z-10">
               <Image

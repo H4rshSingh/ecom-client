@@ -150,7 +150,7 @@ const Suggestion = ({ id }) => {
                     href={`/${suggestion.mainImage.productCategory.replace(
                       / /g,
                       "-"
-                    )}/category/all`}
+                    )}/collection/all`}
                     alt={`Image  of Children`}
                     layout="fill"
                     width={1000}
@@ -175,7 +175,7 @@ const Suggestion = ({ id }) => {
                         href={`/${suggestion.twoGrid.twoGridRooms[0].productCategory.replace(
                           / /g,
                           "-"
-                        )}/category/all`}
+                        )}/collection/all`}
                         alt={`Image  of Children`}
                         layout="fill"
                         width={1000}
@@ -190,7 +190,7 @@ const Suggestion = ({ id }) => {
                         href={`/${suggestion.twoGrid.twoGridRooms[1].productCategory.replace(
                           / /g,
                           "-"
-                        )}/category/all`}
+                        )}/collection/all`}
                         alt={`Image  of Children`}
                         layout="fill"
                         width={1000}
@@ -236,7 +236,7 @@ const Suggestion = ({ id }) => {
                                   href={`/${room.productCategory.replace(
                                     / /g,
                                     "-"
-                                  )}/category/all`}
+                                  )}/collection/all`}
                                   src={room.imgSrc}
                                   alt={`Image of Children`}
                                   width={1000}

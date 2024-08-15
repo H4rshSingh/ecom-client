@@ -1,7 +1,9 @@
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
-import Dataslider from "./Dataslider";
+// import Dataslider from "./Dataslider";
+import dynamic from "next/dynamic";
+const Dataslider = dynamic(() => import("./Dataslider"));
 import { createRef, useEffect, useRef } from "react";
 import {
   selectRecommendationLoader,

@@ -9,6 +9,6 @@ export const fetchProfileData = async () => {
     return response.data;
   } catch (error) {
     console.error(`Error fetching profile content: ${error.message}`);
-    throw error;
+    // throw error;
   }
 };

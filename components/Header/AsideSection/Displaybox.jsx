@@ -11,7 +11,7 @@ const Displaybox = (props) => {
       props.toggleMobileMenu();
     }
     const category = value.replace(/ /g, "-");
-    const newPath = `/${currentCategory}/${props.parentCategory}/${category}`;
+    const newPath = `/${category}/${"subcollection"}/${currentCategory}`;
     router.push(newPath);
     props.setAsideCategory(null);
     props.HandleClick(false);

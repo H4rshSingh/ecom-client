@@ -16,7 +16,7 @@ const Display = dynamic(() => import("./Display"));
 const RoomCard = dynamic(() => import("./RoomCard"));
 const DataSliderWrapper = dynamic(() => import("./DataSliderWrapper"));
 const UserReviewPosts = dynamic(() => import("./UserReviewPosts"));
-const CategoriesSlider = dynamic(() => import("./categorySlider"));
+// const CategoriesSlider = dynamic(() => import("./categorySlider"), { ssr: true });
 
 // import Display from "./Display";
 // import RoomCard from "./RoomCard";
@@ -24,7 +24,7 @@ const CategoriesSlider = dynamic(() => import("./categorySlider"));
 // import DataSliderWrapper from "./DataSliderWrapper";
 // import UserReviewPosts from "./UserReviewPosts";
 
-// import CategoriesSlider from "./CategoriesSlider";
+import CategoriesSlider from "./categorySlider";
 // import Trending from "./Trending";
 
 function Cards() {

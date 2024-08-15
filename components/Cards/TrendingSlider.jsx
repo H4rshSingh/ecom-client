@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Card from "./card";
+// import Card from "./card";
+import dynamic from "next/dynamic";
+const Card = dynamic(() => import("./card"));
 import { viewItemList } from "@/tag-manager/events/view_item_list";
 
-const TrendingSlider = ({ trendingData, isProductInCart, setPopupVisible }) => {
+const TrendingSlider = ({ trendingData, isProductInCart }) => {
   const swiperRef = useRef(null);
 
   useEffect(() => {
@@ -115,7 +117,6 @@ const TrendingSlider = ({ trendingData, isProductInCart, setPopupVisible }) => {
                       id={product._id}
                       category={product.category}
                       productId={product.productId}
-                      setPopupVisible={setPopupVisible}
                       cssClass={"card1flex"}
                       inCart={inCart}
                       unitType={product.unitType}

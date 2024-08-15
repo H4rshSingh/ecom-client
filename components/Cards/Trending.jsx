@@ -1,25 +1,18 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import PopUp from "../Reviews/PopUp";
 import "./styles.css";
-// import "swiper/css";
-// import "swiper/css/pagination";
-// import "swiper/css/navigation";
-// import "swiper/css/free-mode";
-// import "swiper/css/mousewheel";
-// import "swiper/css/scrollbar";
 import { useSelector, useDispatch } from "react-redux";
 import { selectTrendingData } from "../Features/Slices/trendingSlice";
 import { selecteddbItems } from "../Features/Slices/cartSlice";
-import TrendingSlider from "./TrendingSlider";
+import dynamic from "next/dynamic";
+const TrendingSlider = dynamic(() => import("./TrendingSlider"))
 
 const Trending = () => {
   const [newTrendingData, setNewTrendingData] = useState([]);
   // const [cartData, setCartData] = useState([]);
   const trendingData = useSelector(selectTrendingData);
   const dispatch = useDispatch();
-  const [isPopupVisible, setPopupVisible] = useState(false);
   const cartData = useSelector(selecteddbItems);
   // const [TrendingData, setTrendingData] = useState([]);
 
@@ -46,9 +39,6 @@ const Trending = () => {
   //   }
   // }, [newTrendingData]);
 
-  const closePopup = () => {
-    setPopupVisible(false);
-  };
 
   const isProductInCart = (productId) => {
     console.log("Checking product ID:", productId);
@@ -71,11 +61,9 @@ const Trending = () => {
               : "Most Family Choice"}
           </h2>
         </div>
-        <PopUp isPopupVisible={isPopupVisible} closePopup={closePopup} />
         <TrendingSlider
           trendingData={newTrendingData}
           isProductInCart={isProductInCart}
-          setPopupVisible={setPopupVisible}
         />
         <div className="swiper-scrollbar-custom h-[2px]"></div>
       </div>

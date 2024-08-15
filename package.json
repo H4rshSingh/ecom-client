@@ -30,7 +30,8 @@
     "socket.io-client": "^4.7.5",
     "swiper": "^11.1.4",
     "three": "^0.161.0",
-    "usehooks-ts": "^3.1.0"
+    "usehooks-ts": "^3.1.0",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "^14.0.4",

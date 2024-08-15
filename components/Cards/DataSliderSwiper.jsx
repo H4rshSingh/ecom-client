@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Card from "./card";
+// import Card from "./card";
+
+import dynamic from "next/dynamic";
+const Card = dynamic(() => import("./card"))
 
 const DataSliderSwiper = ({ productData, sliderIndex }) => {
   const swiperRef = useRef(null);
 
-  const [isPopupVisible, setPopupVisible] = useState(false);
 
   useEffect(() => {
     const params = {
@@ -90,7 +92,6 @@ const DataSliderSwiper = ({ productData, sliderIndex }) => {
                   imgSrc={product.images}
                   rating={product.ratings}
                   id={product._id}
-                  setPopupVisible={setPopupVisible}
                   cssClass={"card1flex"}
                   productImages={product?.productImages}
                   productType={product.productType}

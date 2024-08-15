@@ -7,7 +7,7 @@ const MainSliderWrapper = async () => {
 
   const sliderData = await fetchSliderData();
 
-  return <MainSlider initialData={sliderData} />;
+  return <MainSlider sliderData={sliderData?.result} />;
 };
 
 export default MainSliderWrapper;

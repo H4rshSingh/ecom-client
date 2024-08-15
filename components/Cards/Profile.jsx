@@ -13,6 +13,7 @@ import Link from "next/link";
 
 const Profile = async () => {
   const profileData = await fetchProfileData()
+  // const profileData = []
 
   return (
     <div>
