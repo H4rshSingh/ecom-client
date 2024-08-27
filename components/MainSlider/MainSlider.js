@@ -4,12 +4,27 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { SwiperSlide } from "swiper/react";
+import { useRouter } from "next/navigation";
 
 const MainSlider = ({ sliderData }) => {
   const swiperRef = useRef(null);
 
   const [windowWidth, setWindowWidth] = useState(600);
   const [isHovering, setIsHovering] = useState(false);
+
+  const router = useRouter();
+
+  const handleTab = () => {
+    router.push("/room");
+  };
+
+  const handleEnter = () => {
+    setIsHovering(true);
+  };
+
+  const handleLeave = () => {
+    setIsHovering(false);
+  };
 
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
@@ -128,7 +143,7 @@ const MainSlider = ({ sliderData }) => {
             <>
               <SwiperSlide>
                 {!!data.link ? (
-                  <Link href={`https://ayatrio.com/category/${data?.link}`}>
+                  <Link href={`/${data?.link}`}>
                     <Image
                       src={
                         windowWidth >= 600
@@ -154,8 +169,11 @@ const MainSlider = ({ sliderData }) => {
                 )}
                 {data &&
                   data.circles.length > 0 &&
-                  data.circles[0].productTitle && (
-                    <div className="absolute  sm:top-0 left-0 flex items-center justify-center w-full h-full transition-opacity opacity-0 group-hover:opacity-100">
+                  data.circles[0].productTitle &&
+                  (data.link ? (
+                    <Link href={`/${data?.link}`}
+                      className={`absolute sm:top-0 left-0 flex items-center justify-center w-full h-full transition-opacity`}
+                    >
                       <div
                         onMouseEnter={handleEnter}
                         className="cursor-pointer"
@@ -165,11 +183,64 @@ const MainSlider = ({ sliderData }) => {
                             top: `${data?.circles[0].topPosition}%`,
                             left: `${data?.circles[0].leftPosition}%`,
                           }}
-                          className="border-2 border-neutral-300 hover:border-white  absolute hover:bg-[rgba(0,0,0,0.3)] rounded-full size-[30px] flex items-center justify-center transition-all duration-200 before:content-[''] before:size-3 before:bg-white  before:rounded-full before:hover:size-2 before:transition-all before:duration-200"
+                          className="border-2 border-neutral-300 hover:border-white  absolute hover:bg-[rgba(0,0,0,0.3)] rounded-full size-[30px] flex items-center justify-center transition-all duration-200 before:content-[''] before:size-3 before:bg-white  before:rounded-full before:hover:size-2 before:transition-all before:duration-200 z-[9999] group/circle"
                         >
                           {isHovering && (
                             <Link
-                              className={`flex-row z-10 p-2  flex items-center pb-3 absolute lg:top-2 lg:left-7 -left-12 top-[70px] bg-white cursor-pointer  shadow-lg drop-shadow-2xl`}
+                              className={`flex-row p-2  flex items-center pb-3 absolute lg:top-2 lg:left-7 -left-12 top-[70px] bg-white cursor-pointer  shadow-lg drop-shadow-2xl z-[9999] opacity-0 group-hover/circle:opacity-100`}
+                              onClick={handleTab}
+                              onMouseLeave={handleLeave}
+                              href={data?.circles[0].productLink}
+                            >
+                              <div className="flex flex-row">
+                                <div
+                                  className="flex flex-col basis-3/4 w-28 flex-grow ml-1 mr-2.5 text-[14px]"
+                                  key={data?._id}
+                                >
+                                  <h2 className="font-[600]">
+                                    {data?.circles[0].productTitle}
+                                  </h2>
+                                  <p>{data?.circles[0].productCategory}</p>
+                                  <p className="flex items-center gap-1 text-2xl mt-1">
+                                    <sub className="text-[12px] font-bold">
+                                      ₹
+                                    </sub>
+                                    {data?.circles[0].productPrice}
+                                  </p>
+                                </div>
+                                <div className="absolute top-0 right-0 flex items-center justify-end h-full">
+                                  <Image
+                                    className="flex mx-1 rotate-90"
+                                    src="/icons/uparrow.svg"
+                                    height={20}
+                                    width={20}
+                                    alt="arrow"
+                                  />
+                                </div>
+                              </div>
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                    </Link>
+                  ) : (
+                    <div
+                      className={`absolute sm:top-0 left-0 flex items-center justify-center w-full h-full transition-opacity`}
+                    >
+                      <div
+                        onMouseEnter={handleEnter}
+                        className="cursor-pointer"
+                      >
+                        <div
+                          style={{
+                            top: `${data?.circles[0].topPosition}%`,
+                            left: `${data?.circles[0].leftPosition}%`,
+                          }}
+                          className="border-2 border-neutral-300 hover:border-white  absolute hover:bg-[rgba(0,0,0,0.3)] rounded-full size-[30px] flex items-center justify-center transition-all duration-200 before:content-[''] before:size-3 before:bg-white  before:rounded-full before:hover:size-2 before:transition-all before:duration-200 z-[9999] group/circle"
+                        >
+                          {isHovering && (
+                            <Link
+                              className={`flex-row p-2  flex items-center pb-3 absolute lg:top-2 lg:left-7 -left-12 top-[70px] bg-white cursor-pointer  shadow-lg drop-shadow-2xl z-[9999] opacity-0 group-hover/circle:opacity-100`}
                               onClick={handleTab}
                               onMouseLeave={handleLeave}
                               href={data?.circles[0].productLink}
@@ -205,7 +276,7 @@ const MainSlider = ({ sliderData }) => {
                         </div>
                       </div>
                     </div>
-                  )}
+                  ))}
               </SwiperSlide>
             </>
           );

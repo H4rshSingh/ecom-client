@@ -1,20 +1,23 @@
-// components/Slider.js
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { roomOptions } from "@/Model/Dropdown/SliderData/SliderData";
-
-import DesignServices from '../HeaderServices/DesignServices';
-import Offers from '../Offers/Offers';
+import DesignServices from "../HeaderServices/DesignServices";
+import Offers from "../Offers/Offers";
 
 import axios from "axios";
 
-const SwiperComponent = ({ hoveredIndex, setHoveredIndex, handleChange, toggleMobileMenu, handleClick }) => {
+const SwiperComponent = ({
+  hoveredIndex,
+  setHoveredIndex,
+  handleChange,
+  toggleMobileMenu,
+}) => {
   const [allOffers, setAllOffers] = useState([]);
 
   const handleClickAll = () => {
     handleChange(false);
-  }
+  };
 
   useEffect(() => {
     const fetchAllOffers = async () => {
@@ -39,18 +42,25 @@ const SwiperComponent = ({ hoveredIndex, setHoveredIndex, handleChange, toggleMo
     <div className=" parent overflow-y-auto pr-6 sm:px-4 w-full border-t border-solid border-[#f5f5f5]">
       {hoveredIndex === 3 && (
         <div className="flex sm:flex-row justify-between h-screen overflow-y-auto flex-col  sm:max-h-[72vh]">
-          <div className={`grid grid-cols-2 sm:grid-cols-4  w-[100%] sm:w-[70%]  my-2`}>
+          <div
+            className={`grid grid-cols-2 sm:grid-cols-4  w-[100%] sm:w-[70%]  my-2`}
+          >
             {roomOptions.map((data, index) => (
-              <div className="bg-white parent group" onClick={handleClickAll} key={index}>
+              <div
+                className="bg-white parent group"
+                onClick={handleClickAll}
+                key={index}
+              >
                 <div className="child w-full h-full pt-3 flex flex-col px-2 justify-start">
                   <Link
-                    href={`/rooms/${data.room.replace(/\s+/g, "-")}`}
+                    href={`/${data.room.replace(/\s+/g, "-")}/rooms`}
                     onClick={() => setHoveredIndex(null)}
                     passHref
                     className="flex flex-col gap-1"
                   >
                     <div className="parent w-[170px] h-[80px]">
-                      <Image loading="lazy"
+                      <Image
+                        loading="lazy"
                         src={data.src}
                         width={400}
                         height={400}
@@ -79,7 +89,8 @@ const SwiperComponent = ({ hoveredIndex, setHoveredIndex, handleChange, toggleMo
                     <li className="text-md font-semibold text-[#111111] py-3 ">
                       {link.title}
                     </li>
-                    <Image loading="lazy"
+                    <Image
+                      loading="lazy"
                       src="/icons/backarrowRevarce.svg"
                       alt="right"
                       width={10}
@@ -91,11 +102,16 @@ const SwiperComponent = ({ hoveredIndex, setHoveredIndex, handleChange, toggleMo
               </ul>
             </div>
           </div>
-
         </div>
       )}
 
-      {hoveredIndex === 4 && <DesignServices handleChange={handleChange} handleClick={handleClickAll} toggleMobileMenu={toggleMobileMenu} />}
+      {hoveredIndex === 4 && (
+        <DesignServices
+          handleChange={handleChange}
+          handleClick={handleClickAll}
+          toggleMobileMenu={toggleMobileMenu}
+        />
+      )}
 
       {hoveredIndex === 5 && <Offers toggleMobileMenu={toggleMobileMenu} />}
     </div>

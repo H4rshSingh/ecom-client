@@ -287,15 +287,15 @@ const ProductPage = ({
     if (queryParams.offer) {
       if (offerProductData.length > 0)
         offerProductData = offerProductData?.filter(
-          (product) => product.offer.toLowerCase() === offer.toLowerCase()
+          (product) => product.offer?.toLowerCase() === offer.toLowerCase()
         );
       if (filteredProductData.length > 0)
         filteredProductData = filteredProductData?.filter(
-          (product) => product.offer.toLowerCase() === offer.toLowerCase()
+          (product) => product.offer?.toLowerCase() === offer.toLowerCase()
         );
       if (demandTypeProduct.length > 0)
         demandTypeProduct = demandTypeProduct?.filter(
-          (product) => product.offer.toLowerCase() === offer.toLowerCase()
+          (product) => product.offer?.toLowerCase() === offer.toLowerCase()
         );
     }
   }

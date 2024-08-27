@@ -24,7 +24,6 @@ const UserReviewPosts = ({ slidesPerView, SubcategoryName }) => {
       console.log(" Some Error Occurred");
     }
   };
-  // console.log(SubcategoryName)
 
   useEffect(() => {
     const filteredPosts = [];
@@ -36,7 +35,6 @@ const UserReviewPosts = ({ slidesPerView, SubcategoryName }) => {
           }
         });
 
-        // console.log(filteredPosts)
         setFilteredPosts(filteredPosts);
       };
       filterPosts();
@@ -51,7 +49,6 @@ const UserReviewPosts = ({ slidesPerView, SubcategoryName }) => {
     setOpenModal(true);
     setSelectedPost(post);
   };
-  console.log(selectedPost);
 
   const handleClose = () => {
     setOpenModal(false);
@@ -59,7 +56,11 @@ const UserReviewPosts = ({ slidesPerView, SubcategoryName }) => {
   };
 
   const postsToRender =
-    FilteredPosts && FilteredPosts.length > 0 ? FilteredPosts : postDetails;
+    FilteredPosts && FilteredPosts.length > 0
+      ? FilteredPosts
+      : !SubcategoryName
+      ? postDetails
+      : [];
   // console.log(postsToRender)
 
   const formatDate = (dateString) => {
@@ -78,10 +79,14 @@ const UserReviewPosts = ({ slidesPerView, SubcategoryName }) => {
   return (
     <div>
       {openModal && <div className="background-overlay open"></div>}
-      <div className={`bg-white mt-2 ${openModal ? "overflow-hidden" : ""}`}>
+      <div
+        className={`bg-white border-b-[0.5px] border-[#f5f5f5] mt-2 ${
+          openModal ? "overflow-hidden" : ""
+        }`}
+      >
         <div className="mb-2 pr-[20px] w-full flex justify-between items-center">
           <div className="mb-[32px]">
-            <h2 className="font-semibold text-2xl pb-[8px] ">
+            <h2 className="text-[#222222] text-[20px] font-medium pb-[8px] ">
               As seen on Instagram
             </h2>
             <p className="text-[14px] line-clamp-2 lg:line-clamp-none md:w-[75%]">
@@ -146,7 +151,10 @@ const UserReviewPosts = ({ slidesPerView, SubcategoryName }) => {
                 </div>
                 <div className="flex-1">
                   {selectedPost.products.map((item) => (
-                    <Link href={`product/${item.productTitle}`} key={item._id}>
+                    <Link
+                      href={`/${item.productTitle}/${item.productId}`}
+                      key={item._id}
+                    >
                       <div className="flex w-full pr-[20px] lg:pr-[0px] py-[30px] gap-5 items-center justify-between border-b">
                         <div>
                           <Image

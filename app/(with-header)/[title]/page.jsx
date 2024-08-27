@@ -20,6 +20,12 @@ const Page = async ({ params }) => {
     case "subcategory":
       return redirect(`/${params.title}/subcollection/${parentCategory}`);
 
+    case "room":
+      return redirect(`/${params.title}/rooms`);
+
+    case "suggestion":
+      return redirect(`/${params.title}/inspiration`);
+
     default:
       break;
   }

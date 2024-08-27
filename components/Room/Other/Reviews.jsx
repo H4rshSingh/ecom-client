@@ -20,8 +20,9 @@ const ratingsData = [
         {[1, 2, 3, 4, 5].map((number, index) => (
           <div
             key={index}
-            className={`border mb-2 ${index === 0 ? "border-black bg-black" : "bg-gray-300"
-              }  w-32 h-1.5 flex flex-row items-center justify-start`}
+            className={`border mb-2 ${
+              index === 0 ? "border-black bg-black" : "bg-gray-300"
+            }  w-32 h-1.5 flex flex-row items-center justify-start`}
           >
             <span className="-ml-3 text-sm">{number}</span>
           </div>
@@ -120,7 +121,6 @@ const Reviews = ({ productId, data }) => {
     4: 0,
     5: 0,
   });
-
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window?.location?.search);
@@ -342,12 +342,66 @@ const Reviews = ({ productId, data }) => {
     allowSlideNext: true,
   };
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
     <>
-      <div className=" sm:w-auto overflow-x-hidden">
-        {(data.productType === "special" ||
-          data.productType === "requested") && (
-            <div className="md:mb-[34px] mb-[16px]" >
+      <div className=" sm:w-auto overflow-x-hidden mb-5 -mt-6 flex flex-col justify-center py-[24px] border-b-[0.5px] border-[#f5f5f5] ">
+        {/*  */}
+        <div className="flex justify-between" onClick={toggleDropdown}>
+          <div className="flex items-center space-x-2">
+            <div className="flex -space-x-2 overflow-hidden">
+              {reviews.slice(0, 3).map((review, index) => (
+                <div className=" bg-white rounded-full flex items-center justify-center w-[25px] h-[25px] md:w-[25px] md:h-[25px]">
+                  <Image
+                    loading="lazy"
+                    src={review.profilePic}
+                    height={20}
+                    width={20}
+                    alt="profile2"
+                    className="rounded-full  w-[22px] h-[22px] md:w-[22px] md:h-[22px]"
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="text-[#222222] text-[20px] font-medium">
+              {reviews.length}
+              <span> reviews</span>
+            </div>
+          </div>
+          {/* right */}
+          <div className="flex space-x-4">
+            <p className="text-lg font-bold">{calculateOverallAverageRating}</p>
+            <Image
+              loading="lazy"
+              src="/icons/star full black.svg"
+              width={15}
+              height={15}
+              alt="star"
+              className="m-[2px]"
+            />
+            <div className="pr-5">
+              <Image
+                loading="lazy"
+                src="/icons/downarrow.svg"
+                alt="tick"
+                width={25}
+                height={25}
+                className=""
+              />
+            </div>
+          </div>
+        </div>
+        {/*  */}
+        {isDropdownOpen &&
+          (data.productType === "special" ||
+            data.productType === "requested") && (
+            <div className="md:mb-[34px] mt-7 mb-[16px]">
               <div className="flex flex-col justify-center mx-auto">
                 {data.productType === "requested" && (
                   <div className="flex items-center justify-center overflow-hidden flex-row ">
@@ -384,16 +438,28 @@ const Reviews = ({ productId, data }) => {
                   </div>
                 )}
                 <div className="flex justify-center items-center flex-col ">
-                  <div className={`text-xl mb-1 font-bold   ${data.productType === "requested" ? "text-[#bf9b30]" : "text-black"}`} >Ayatrio Member Favourite</div>
+                  <div
+                    className={`text-xl mb-1 font-bold   ${
+                      data.productType === "requested"
+                        ? "text-[#bf9b30]"
+                        : "text-black"
+                    }`}
+                  >
+                    Ayatrio Member Favourite
+                  </div>
                   <div className=" text-center text-gray-500">
-                    <p className="text-[14px]">One of the most loved homes on Ayatrio</p>
-                    <p className="text-[14px]">based on {showRatingTypes?.map((item) => item.name).join(", ")}</p>
+                    <p className="text-[14px]">
+                      One of the most loved homes on Ayatrio
+                    </p>
+                    <p className="text-[14px]">
+                      based on{" "}
+                      {showRatingTypes?.map((item) => item.name).join(", ")}
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
           )}
-
         {/* <div className="rating-map flex justify-around mt-12 w-full overflow-x-auto">
           {ratingsData.map((item, index) => (
             <div key={index} className={`flex flex-col items-center text-center flex-grow px-4 ${ratingsData.length - 1 !== index ? 'border-r' : ''}`}>
@@ -403,271 +469,108 @@ const Reviews = ({ productId, data }) => {
             </div>
           ))}
         </div> */}
+        {isDropdownOpen &&
+          reviews?.length > 0 &&
+          showRatingTypes?.length > 0 && (
+            <div className="rating-map  hidden md:flex justify-between  mt-6 w-full overflow-x-auto lg:mb-8 mb-4  ">
+              {/* Overall Ratings */}
 
-        {reviews?.length > 0 && showRatingTypes?.length > 0 && (
-          <div className="rating-map  hidden md:flex justify-between  mt-6 w-full overflow-x-auto lg:mb-8 mb-4  ">
-            {/* Overall Ratings */}
-
-            <div className="flex flex-col items-center">
-              <div className="font-semibold text-gray-700 mb-2 capitalize">
-                Overall Ratings
-              </div>
-              <div className="mt-2">
-                {[5, 4, 3, 2, 1].map((number, index) => (
-                  <div className="flex">
-                    <span className="mr-2 text-sm">{number}</span>
-                    <div className="flex items-center w-20">
-                      <div className="h-1 bg-gray-300 w-full overflow-hidden">
-                        <div
-                          className="h-full bg-black rounded-r-full"
-                          style={{
-                            width: `${(ratingCounts[number] / reviews.length) * 100
+              <div className="flex flex-col items-center">
+                <div className="font-semibold text-gray-700 mb-2 capitalize">
+                  Overall Ratings
+                </div>
+                <div className="mt-2">
+                  {[5, 4, 3, 2, 1].map((number, index) => (
+                    <div className="flex">
+                      <span className="mr-2 text-sm">{number}</span>
+                      <div className="flex items-center w-20">
+                        <div className="h-1 bg-gray-300 w-full overflow-hidden">
+                          <div
+                            className="h-full bg-black rounded-r-full"
+                            style={{
+                              width: `${
+                                (ratingCounts[number] / reviews.length) * 100
                               }%`,
-                          }}
-                        ></div>
+                            }}
+                          ></div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Rating Types */}
-            {showRatingTypes?.map((item, index) => (
-              <div
-                key={item._id}
-                className={`flex flex-col items-center text-center min-w-[110px] ${index === showRatingTypes.length - 1 ? "mr-8" : ""
-                  }`}
-              >
-                <div className="font-semibold text-gray-700 mb-4 capitalize">
-                  {item.name}
-                </div>
-                <div className="text-lg font-semibold text-gray-900 my-2">
-                  {computeAverageRatings[item._id]}
-                </div>
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={30}
-                  height={30}
-                  loading="lazy"
-                />
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div className="flex justify-between items-baseline mt-10 mb-2 ">
-          <div className="flex mb-1 text-xl font-semibold space-x-1">
-            {calculateOverallAverageRating > 0 && (
-              <>
-                <Image
-                  loading="lazy"
-                  src="/icons/star full black.svg"
-                  width={15}
-                  height={15}
-                  alt="star"
-                  className="m-[2px]"
-                />
-                {calculateOverallAverageRating}
-                <span aria-hidden="true">·</span>
-              </>
-            )}
-            <div className="text-lg underline">
-              {reviews.length}
-              <span> reviews</span>
-            </div>
-          </div>
-          <>
-            {isLoading ? (
-              <p>Loading...</p>
-            ) : !isReview ? (
-              <ReviewForm addReview={addReview} categoryData={categoryData}  isAuthenticated={isAuthenticated}/>
-            ) : (
-              <div>
-                {/* This section can be used for further review-related content */}
-              </div>
-            )}
-          </>
-        </div>
-        <div
-          className="reviews-container hidden mt-4 max-w-[80%] md:flex md:flex-col   gap-4  "
-          style={{ overflowX: "hidden" }}
-        >
-          {reviews.slice(0, 3).map((review, index) => (
-            <div key={index} className="sm:mr-12 mb-8 m-0 sm:block ">
-              <div className="flex justify-between">
-                <Link
-                  className="review-header flex items-center"
-                  href={`/profile/${review?.userId}`}
-                >
-                  <div className="w-[48px] h-[48px] mr-4">
-                    <img
-                      className="w-full h-full rounded-full object-cover"
-                      src={review.profilePic}
-                      alt="User Avatar"
-                    />
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="font-semibold text-[16px]">
-                      {review.name}
-                    </span>
-                    {/* <span className="font-normal text-[14px] text-gray-500">
-                      {review.location}
-                    </span> */}
-                  </div>
-                </Link>
-                {isAuthenticated && user.email === review.userEmail && (
-                  <div className="flex items-center">
-                    <button onClick={() => handleDelete(review._id)}>
-                      Delete
-                    </button>
-                  </div>
-                )}
-              </div>
-              <div className="ratings flex mt-3">
-                {[...Array(review.rating)].map((_, i) => (
-                  <Image
-                    loading="lazy"
-                    key={i}
-                    src="/icons/star full black.svg"
-                    width={15}
-                    height={15}
-                    alt="star"
-                    className="m-[2px]"
-                  />
-                ))}
-                <span className="text-sm font-semibold ml-2">
-                  {Date(review.createdAt).slice(0, 15)}
-                </span>
-              </div>
-
-              <div className="review mt-2">
-                <p className="text-gray-600 font-[16px] leading-6  sm:w-auto text-left w-[100%]">
-                  {review.showFullComment
-                    ? review.comment
-                    : `${review.comment.slice(0, 150)}...`}
-                  {review.comment.length > 150 && (
-                    <button
-                      className="underline font-medium cursor-pointer ml-1"
-                      onClick={() => toggleShowMore(index)}
-                    >
-                      {review.showFullComment ? "Show Less" : "Show More"}
-                    </button>
-                  )}
-                </p>
-              </div>
-
-              {review.images.length > 0 && (
-                <div className="flex gap-2 mb-4">
-                  {review.images.map((image, index) => (
-                    <img
-                      key={index}
-                      src={image}
-                      alt="review"
-                      className="w-[100px] h-[100px] object-cover"
-                    />
                   ))}
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
-        {
-          reviews.length > 3 && (
-            <button
-              onClick={() => {
-                setSidebarContent("showReviews");
-              }}
-              className="font-semibold hidden md:flex  mb-4 py-2 px-4  border hover:bg-zinc-100"
-            >
-              Show all reviews
-            </button>
-          )
-        }
+              </div>
 
-        <div className="md:hidden max-h-[300px] w-full">
-          <Swiper
-            ref={swiper1Ref}
-            {...swiperOptions}
-            scrollbar={{
-              hide: false,
-              draggable: true,
-            }}
-            mousewheel={{
-              forceToAxis: true,
-              invert: false,
-            }}
-            freeMode={{
-              enabled: true,
-              sticky: true,
-            }}
-            breakpoints={{
-              300: {
-                slidesPerView: 1.1,
-                spaceBetween: 10,
-              },
-              640: {
-                slidesPerView: 2,
-                spaceBetween: 10,
-              },
-              1024: {
-                slidesPerView: 1.1,
-                spaceBetween: 10,
-              },
-            }}
-            allowSlideNext={true}
-            allowSlidePrev={true}
-            slideNextClass="custom-next-button"
-            slidePrevClass="custom-prev-button"
-            className="px-10 "
-          >
-            {reviews.slice(0, 3).map((review, index) => (
-              <SwiperSlide>
+              {/* Rating Types */}
+              {showRatingTypes?.map((item, index) => (
                 <div
-                  key={index}
-                  className="sm:mr-12 mb-8 flex flex-col justify-between m-0 sm:block rounded-sm p-4 border shadow-sm min-h-[230px] "
+                  key={item._id}
+                  className={`flex flex-col items-center text-center min-w-[110px] ${
+                    index === showRatingTypes.length - 1 ? "mr-8" : ""
+                  }`}
                 >
-                  <div className="flex flex-col justify-between h-full">
-                    <div>
-                      <div className="ratings flex mt-3">
-                        {[...Array(review.rating)].map((_, i) => (
-                          <Image
-                            loading="lazy"
-                            key={i}
-                            src="/icons/star full black.svg"
-                            width={10}
-                            height={10}
-                            alt="star"
-                            className="m-[2px]"
-                          />
-                        ))}
-                        <span className="text-sm font-semibold ml-2 text-gray-600">
-                          {new Date(review.createdAt).toLocaleString(
-                            "default",
-                            { month: "long", year: "numeric" }
-                          )}
-                        </span>
-                      </div>
-
-                      <div className="review mt-1">
-                        <p className="text-gray-600 font-[16px]  text-[14px] leading-6  sm:w-auto text-left w-[100%]">
-                          {review.showFullComment
-                            ? review.comment
-                            : `${review.comment.slice(0, 100)}...`}
-                        </p>
-                        {review.comment.length > 100 && (
-                          <button
-                            className="underline font-medium cursor-pointer text-[14px] mt-1"
-                            onClick={() => toggleShowMore(index)}
-                          >
-                            {review.showFullComment ? "Show Less" : "Show More"}
-                          </button>
-                        )}
-                      </div>
-                    </div>
+                  <div className="font-semibold text-gray-700 mb-4 capitalize">
+                    {item.name}
                   </div>
-                  <div className="flex justify-between mt-5">
+                  <div className="text-lg font-semibold text-gray-900 my-2">
+                    {computeAverageRatings[item._id]}
+                  </div>
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    width={30}
+                    height={30}
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+        {isDropdownOpen && (
+          <>
+            <div className="flex justify-between items-baseline mt-10 mb-2 ">
+              <div className="flex mb-1 text-xl font-semibold space-x-1">
+                {calculateOverallAverageRating > 0 && (
+                  <>
+                    <Image
+                      loading="lazy"
+                      src="/icons/star full black.svg"
+                      width={15}
+                      height={15}
+                      alt="star"
+                      className="m-[2px]"
+                    />
+                    {calculateOverallAverageRating}
+                    <span aria-hidden="true">·</span>
+                  </>
+                )}
+                <div className="text-lg underline">
+                  {reviews.length}
+                  <span> reviews</span>
+                </div>
+              </div>
+              <>
+                {isLoading ? (
+                  <p>Loading...</p>
+                ) : !isReview ? (
+                  <ReviewForm
+                    addReview={addReview}
+                    categoryData={categoryData}
+                    isAuthenticated={isAuthenticated}
+                  />
+                ) : (
+                  <div>
+                    {/* This section can be used for further review-related content */}
+                  </div>
+                )}
+              </>
+            </div>
+            <div
+              className="reviews-container hidden mt-4 max-w-[80%] md:flex md:flex-col   gap-4  "
+              style={{ overflowX: "hidden" }}
+            >
+              {reviews.slice(0, 3).map((review, index) => (
+                <div key={index} className="sm:mr-12 mb-8 m-0 sm:block ">
+                  <div className="flex justify-between">
                     <Link
                       className="review-header flex items-center"
                       href={`/profile/${review?.userId}`}
@@ -683,7 +586,9 @@ const Reviews = ({ productId, data }) => {
                         <span className="font-semibold text-[16px]">
                           {review.name}
                         </span>
-                        <span className="font-normal text-[14px] text-gray-500"></span>
+                        {/* <span className="font-normal text-[14px] text-gray-500">
+                      {review.location}
+                    </span> */}
                       </div>
                     </Link>
                     {isAuthenticated && user.email === review.userEmail && (
@@ -694,9 +599,41 @@ const Reviews = ({ productId, data }) => {
                       </div>
                     )}
                   </div>
+                  <div className="ratings flex mt-3">
+                    {[...Array(review.rating)].map((_, i) => (
+                      <Image
+                        loading="lazy"
+                        key={i}
+                        src="/icons/star full black.svg"
+                        width={15}
+                        height={15}
+                        alt="star"
+                        className="m-[2px]"
+                      />
+                    ))}
+                    <span className="text-sm font-semibold ml-2">
+                      {Date(review.createdAt).slice(0, 15)}
+                    </span>
+                  </div>
+
+                  <div className="review mt-2">
+                    <p className="text-gray-600 font-[16px] leading-6  sm:w-auto text-left w-[100%]">
+                      {review.showFullComment
+                        ? review.comment
+                        : `${review.comment.slice(0, 150)}...`}
+                      {review.comment.length > 150 && (
+                        <button
+                          className="underline font-medium cursor-pointer ml-1"
+                          onClick={() => toggleShowMore(index)}
+                        >
+                          {review.showFullComment ? "Show Less" : "Show More"}
+                        </button>
+                      )}
+                    </p>
+                  </div>
 
                   {review.images.length > 0 && (
-                    <div className="flex gap-2 mb-4 mt-4">
+                    <div className="flex gap-2 mb-4">
                       {review.images.map((image, index) => (
                         <img
                           key={index}
@@ -708,24 +645,162 @@ const Reviews = ({ productId, data }) => {
                     </div>
                   )}
                 </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-        {
-          reviews.length > 3 && (
-            <button
-              onClick={() => {
-                setSidebarContent("showReviews");
-              }}
-              className="font-semibold flex md:hidden  mb-4 py-2 px-4 mt-6  border hover:bg-zinc-100"
-            >
-              Show all reviews
-            </button>
-          )
-        }
+              ))}
+            </div>
 
-        {sidebarContent === "showReviews" && (
+            {reviews.length > 3 && (
+              <button
+                onClick={() => {
+                  setSidebarContent("showReviews");
+                }}
+                className="font-semibold hidden md:flex  mb-4 py-2 px-4  border hover:bg-zinc-100"
+              >
+                Show all reviews
+              </button>
+            )}
+          </>
+        )}
+        {isDropdownOpen && (
+          <div className="md:hidden max-h-[300px] w-full">
+            <Swiper
+              ref={swiper1Ref}
+              {...swiperOptions}
+              scrollbar={{
+                hide: false,
+                draggable: true,
+              }}
+              mousewheel={{
+                forceToAxis: true,
+                invert: false,
+              }}
+              freeMode={{
+                enabled: true,
+                sticky: true,
+              }}
+              breakpoints={{
+                300: {
+                  slidesPerView: 1.1,
+                  spaceBetween: 10,
+                },
+                640: {
+                  slidesPerView: 2,
+                  spaceBetween: 10,
+                },
+                1024: {
+                  slidesPerView: 1.1,
+                  spaceBetween: 10,
+                },
+              }}
+              allowSlideNext={true}
+              allowSlidePrev={true}
+              slideNextClass="custom-next-button"
+              slidePrevClass="custom-prev-button"
+              className="px-10 "
+            >
+              {reviews.slice(0, 3).map((review, index) => (
+                <SwiperSlide>
+                  <div
+                    key={index}
+                    className="sm:mr-12 mb-8 flex flex-col justify-between m-0 sm:block rounded-sm p-4 border shadow-sm min-h-[230px] "
+                  >
+                    <div className="flex flex-col justify-between h-full">
+                      <div>
+                        <div className="ratings flex mt-3">
+                          {[...Array(review.rating)].map((_, i) => (
+                            <Image
+                              loading="lazy"
+                              key={i}
+                              src="/icons/star full black.svg"
+                              width={10}
+                              height={10}
+                              alt="star"
+                              className="m-[2px]"
+                            />
+                          ))}
+                          <span className="text-sm font-semibold ml-2 text-gray-600">
+                            {new Date(review.createdAt).toLocaleString(
+                              "default",
+                              { month: "long", year: "numeric" }
+                            )}
+                          </span>
+                        </div>
+
+                        <div className="review mt-1">
+                          <p className="text-gray-600 font-[16px]  text-[14px] leading-6  sm:w-auto text-left w-[100%]">
+                            {review.showFullComment
+                              ? review.comment
+                              : `${review.comment.slice(0, 100)}...`}
+                          </p>
+                          {review.comment.length > 100 && (
+                            <button
+                              className="underline font-medium cursor-pointer text-[14px] mt-1"
+                              onClick={() => toggleShowMore(index)}
+                            >
+                              {review.showFullComment
+                                ? "Show Less"
+                                : "Show More"}
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between mt-5">
+                      <Link
+                        className="review-header flex items-center"
+                        href={`/profile/${review?.userId}`}
+                      >
+                        <div className="w-[48px] h-[48px] mr-4">
+                          <img
+                            className="w-full h-full rounded-full object-cover"
+                            src={review.profilePic}
+                            alt="User Avatar"
+                          />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-semibold text-[16px]">
+                            {review.name}
+                          </span>
+                          <span className="font-normal text-[14px] text-gray-500"></span>
+                        </div>
+                      </Link>
+                      {isAuthenticated && user.email === review.userEmail && (
+                        <div className="flex items-center">
+                          <button onClick={() => handleDelete(review._id)}>
+                            Delete
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {review.images.length > 0 && (
+                      <div className="flex gap-2 mb-4 mt-4">
+                        {review.images.map((image, index) => (
+                          <img
+                            key={index}
+                            src={image}
+                            alt="review"
+                            className="w-[100px] h-[100px] object-cover"
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        )}
+        {isDropdownOpen && reviews.length > 3 && (
+          <button
+            onClick={() => {
+              setSidebarContent("showReviews");
+            }}
+            className="font-semibold flex md:hidden  mb-4 py-2 px-4 mt-6  border hover:bg-zinc-100"
+          >
+            Show all reviews
+          </button>
+        )}
+        {isDropdownOpen && sidebarContent === "showReviews" && (
           <div className="fixed z-[99999] h-full w-screen bg-black/50 top-0 left-0">
             <section className="text-black bg-white flex-col absolute right-0 top-0 h-full z-[99999] w-full lg:w-[35%] flex overflow-y-auto">
               <div className="flex flex-col">
@@ -763,7 +838,7 @@ const Reviews = ({ productId, data }) => {
                                 <div className="ratings flex mt-3">
                                   {[...Array(review.rating)].map((_, i) => (
                                     <Image
-                                      loading="lazy" 
+                                      loading="lazy"
                                       key={i}
                                       src="/icons/star full black.svg"
                                       width={10}
@@ -804,13 +879,16 @@ const Reviews = ({ productId, data }) => {
                                   <span className="font-normal text-[14px] text-gray-500"></span>
                                 </div>
                               </Link>
-                              {isAuthenticated && user.email === review.userEmail && (
-                                <div className="flex items-center">
-                                  <button onClick={() => handleDelete(review._id)}>
-                                    Delete
-                                  </button>
-                                </div>
-                              )}
+                              {isAuthenticated &&
+                                user.email === review.userEmail && (
+                                  <div className="flex items-center">
+                                    <button
+                                      onClick={() => handleDelete(review._id)}
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
+                                )}
                             </div>
 
                             {review.images.length > 0 && (

@@ -13,26 +13,14 @@ import "swiper/css/free-mode";
 import "swiper/css/mousewheel";
 import "swiper/css/scrollbar";
 import "./styles.css";
-
-// import required modules
-import {
-  Keyboard,
-  Scrollbar,
-  Navigation,
-  Mousewheel,
-  Pagination,
-  FreeMode,
-} from "swiper/modules";
 import TabImage from "../Cards/TabImage";
 import Multicard from "@/components/Imagechanger/Multicard";
-import Card from "../Cards/card";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectProductData,
   selectRoomData,
   selectRoomMain,
 } from "../Features/Slices/roomMainSlice";
-import Link from "next/link";
 import axios from "axios";
 import Tabs from "../Cards/Tabs";
 import BlogRelatedProducts from "../Cards/BlogRelatedProducts";
@@ -45,7 +33,6 @@ export const RoomsPage = ({ params }) => {
 
   const [productData, setProductData] = useState([]);
   const [roomData, setRoomData] = useState([]);
-  const [swiperRef, setSwiperRef] = useState(null);
 
   const [dataFetched, setDataFetched] = useState(false);
   const [roomMain, setRoomMain] = useState({});
@@ -54,13 +41,6 @@ export const RoomsPage = ({ params }) => {
   const roomSelect = useSelector(selectRoomData);
   const productSelect = useSelector(selectProductData);
   const roomMainSelect = useSelector(selectRoomMain);
-
-  // const fetchRoomMain = async () => {
-  //   const url = `${process.env.NEXT_PUBLIC_API_BASE_URL
-  //     }/api/getRoommain?roomType=${params.replace(/-/g, " ")}`;
-  //   const response = await axios.get(url);
-  //   setRoomMain(response.data);
-  // };
 
   const [reviewRoom, setReviewRoom] = useState({});
   const [reviewData, setReviewData] = useState([]);
@@ -104,14 +84,12 @@ export const RoomsPage = ({ params }) => {
   }, [params]);
 
   useEffect(() => {
-    // fetchRoomMain();
     if (!dataFetched) {
       dispatch({ type: "FETCH_ROOM_MAIN_DATA_REQUEST", payload: { params } });
       setDataFetched(true);
     }
     setRoomData(roomSelect);
     setProductData(productSelect);
-    console.log(productSelect);
     setRoomMain(roomMainSelect);
   }, [
     dispatch,
@@ -121,30 +99,6 @@ export const RoomsPage = ({ params }) => {
     productSelect,
     roomMainSelect,
   ]);
-
-  const swiperUseref = useRef(null);
-  const swiperOptions2 = {
-    slidesPerView: 4.08,
-    centeredSlides: false,
-    spaceBetween: 1,
-    modules: [Pagination, Scrollbar, Mousewheel, FreeMode],
-    navigation: {
-      nextEl: ".custom-next-button",
-      prevEl: ".custom-prev-button",
-    },
-    noSwiping: true,
-    allowSlidePrev: true,
-    allowSlideNext: true,
-  };
-
-  const swiper1Ref = useRef(null);
-  const swiper2Ref = useRef(null);
-
-  console.log(roomMain);
-
-  // console.log(roomMain.children)
-  const [hovered, setIsHovered] = useState(false);
-  const [reviewhovered, setReviewhovered] = useState(false);
 
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
@@ -157,12 +111,10 @@ export const RoomsPage = ({ params }) => {
   };
 
   return (
-    <div className="w-full">
-      <div className=" md:pt-10 px-[20px] sm:px-[50px] lg:px-[67px]">
-        {roomMain &&
-          roomMain.position &&
-          roomMain.position.length > 0 &&
-          roomMain.position.map((name, idx) => (
+    <div className="w-full min-h-screen">
+      {roomMain && roomMain.position && roomMain.position.length > 0 && (
+        <div className=" md:pt-10 px-[20px] sm:px-[50px] lg:px-[67px]">
+          {roomMain.position.map((name, idx) => (
             <div key={idx} className="">
               {name === "heading" && (
                 <div>
@@ -303,45 +255,46 @@ export const RoomsPage = ({ params }) => {
               )}
             </div>
           ))}
-        <RankedProducts />
-        <div className="flex mt-20  lg:max-h-[490px] lg:flex-row w-full flex-col">
-          <div className="lg:w-2/3 h-[446px]">
-            {reviewRoom && (
-              <TabImage
-                src={reviewRoom.imgSrc}
-                alt={`Image  of Children`}
-                width={1000}
-                height={446}
-                labelData={reviewRoom.children}
-              />
-            )}
-          </div>
-          <div className="lg:w-1/3 min-h-[363px]  bg-zinc-100 p-10  lg:p-12">
-            <div className="flex flex-col ">
-              <div>
-                <p>{reviewData && reviewData.comment}</p>
-              </div>
-              <div className="flex mt-5 flex-row items-center gap-2 ">
-                <Image
-                  loading="lazy"
-                  src={reviewData && reviewData.image}
-                  width={45}
-                  height={45}
-                  alt={reviewData && reviewData.name}
-                  className=" aspect-square object-cover rounded-full"
+          <RankedProducts />
+          <div className="flex mt-20  lg:max-h-[490px] lg:flex-row w-full flex-col">
+            <div className="lg:w-2/3 h-[446px]">
+              {reviewRoom && (
+                <TabImage
+                  src={reviewRoom.imgSrc}
+                  alt={`Image  of Children`}
+                  width={1000}
+                  height={446}
+                  labelData={reviewRoom.children}
                 />
-                <p>{reviewData && reviewData.name}</p>
+              )}
+            </div>
+            <div className="lg:w-1/3 min-h-[363px]  bg-zinc-100 p-10  lg:p-12">
+              <div className="flex flex-col ">
+                <div>
+                  <p>{reviewData && reviewData.comment}</p>
+                </div>
+                <div className="flex mt-5 flex-row items-center gap-2 ">
+                  <Image
+                    loading="lazy"
+                    src={reviewData && reviewData.image}
+                    width={45}
+                    height={45}
+                    alt={reviewData && reviewData.name}
+                    className=" aspect-square object-cover rounded-full"
+                  />
+                  <p>{reviewData && reviewData.name}</p>
+                </div>
               </div>
             </div>
           </div>
+
+          <Multicard forhomePage={false} />
+
+          {productSelect && productSelect.length > 0 && (
+            <Tabs data={productSelect} />
+          )}
         </div>
-
-        <Multicard forhomePage={false} />
-
-        {productSelect && productSelect.length > 0 && (
-          <Tabs data={productSelect} />
-        )}
-      </div>
+      )}
     </div>
   );
 };

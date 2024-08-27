@@ -99,14 +99,16 @@ const Tabs = ({ data }) => {
         const perUnitPrice = product.children[0].productPrice
         const topPosition = product.children[0].topPosition
         const leftPosition = product.children[0].leftPosition
-        const ProductLink = product.children[0].productLink
+        const productLink = product.children[0].productLink
+        const status = product.children[0].status
         return {
           productTitle,
           productCategory: category,
           productPrice: perUnitPrice,
           topPosition,
           leftPosition,
-          ProductLink
+          productLink,
+          status
         };
       });
       tabsData.push({
@@ -184,6 +186,7 @@ const Tabs = ({ data }) => {
               <TabImage
                 width={450}
                 height={700}
+                href={labelData[uniqueRoomCategories[0]]?.[0]?.productLink}
                 src={tabImages[uniqueRoomCategories[0]]?.[0]}
                 alt={labelData[uniqueRoomCategories[0]]?.[0]?.productCategory || "Room image"}
                 handleTab={handleTab}
@@ -202,6 +205,7 @@ const Tabs = ({ data }) => {
 
               <TabImage
                 src={tabImages[uniqueRoomCategories[2]]?.[0]}
+                href={labelData[uniqueRoomCategories[2]]?.[0]?.productLink}
                 labelData={labelData[uniqueRoomCategories[2]]?.[0] || []}
                 alt={labelData[uniqueRoomCategories[2]]?.[0]?.productCategory || "Room image"}
                 width={450}
@@ -221,6 +225,7 @@ const Tabs = ({ data }) => {
               <TabImage
                 src={tabImages[uniqueRoomCategories[3]]?.[0]}
                 labelData={labelData[uniqueRoomCategories[3]]?.[0] || []}
+                href={labelData[uniqueRoomCategories[3]]?.[0]?.productLink}
                 alt={labelData[uniqueRoomCategories[3]]?.[0]?.productCategory || "Room image"}
                 handleTab={handleTab}
                 width={450}
@@ -279,6 +284,7 @@ const Tabs = ({ data }) => {
                   <TabImage
                     src={tabImages[uniqueRoomCategories[8]]?.[0]}
                     labelData={labelData[uniqueRoomCategories[8]]?.[0] || []}
+                    href={labelData[uniqueRoomCategories[8]]?.[0]?.productLink}
                     alt={labelData[uniqueRoomCategories[8]]?.[0]?.productCategory || "Room image"}
                     width={450}
                     height={700}
@@ -304,6 +310,7 @@ const Tabs = ({ data }) => {
                 loadMoreAll && (
                   <TabImage
                     src={tabImages[uniqueRoomCategories[9]]?.[0]}
+                    href={labelData[uniqueRoomCategories[9]]?.[0]?.productLink}
                     labelData={labelData[uniqueRoomCategories[9]]?.[0] || []}
                     alt={labelData[uniqueRoomCategories[9]]?.[0]?.productCategory || "Room image"}
                     handleTab={handleTab}
@@ -362,6 +369,7 @@ const Tabs = ({ data }) => {
                     ? tabImages[activeTab][0]
                     : tabImages[activeTab]?.alt
                 }
+                href={labelData[activeTab]?.[0]?.productLink}
                 alt="Room"
                 handleTab={handleTab}
                 labelData={labelData[activeTab]?.[0] || []}
@@ -387,6 +395,7 @@ const Tabs = ({ data }) => {
                     ? tabImages[activeTab][2]
                     : tabImages[activeTab]?.alt
                 }
+                href={labelData[activeTab]?.[2]?.productLink}
                 labelData={labelData[activeTab]?.[2] || []}
                 alt="Room"
                 width={450}
@@ -409,6 +418,7 @@ const Tabs = ({ data }) => {
                     ? tabImages[activeTab][3]
                     : tabImages[activeTab]?.alt
                 }
+                href={labelData[activeTab]?.[3]?.productLink}
                 labelData={labelData[activeTab]?.[3] || []}
                 alt="Room"
                 handleTab={handleTab}
@@ -451,6 +461,7 @@ const Tabs = ({ data }) => {
                         ? tabImages[activeTab][6]
                         : tabImages[activeTab]?.alt
                     }
+                    href={labelData[activeTab]?.[6]?.productLink}
                     alt="Room"
                     handleTab={handleTab}
                     labelData={labelData[activeTab]?.[6] || []}
@@ -485,6 +496,7 @@ const Tabs = ({ data }) => {
                         : tabImages[activeTab]?.alt
                     }
                     labelData={labelData[activeTab]?.[8] || []}
+                    href={labelData[activeTab]?.[8]?.productLink}
                     alt="Room"
                     width={450}
                     height={700}
@@ -515,6 +527,7 @@ const Tabs = ({ data }) => {
                         : tabImages[activeTab]?.alt
                     }
                     labelData={labelData[activeTab]?.[9] || []}
+                    href={labelData[activeTab]?.[9]?.productLink}
                     alt="Room"
                     handleTab={handleTab}
                     width={450}

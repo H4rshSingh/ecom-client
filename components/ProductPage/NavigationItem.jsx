@@ -63,7 +63,7 @@ const NavigationItem = ({ product: data }) => {
         href={`/${data?.subcategory?.replace(
           / /g,
           "-"
-        )}/subcategory/${data?.category?.replace(/ /g, "-")}`}
+        )}/collection/${data?.category?.replace(/ /g, "-")}`}
       >
         <span className="hover:text-gray-500 cursor-pointer line-clamp-1">
           {data?.subcategory}

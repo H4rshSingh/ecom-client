@@ -722,8 +722,7 @@ const Tabs = ({
             ) : (
               parentCategory &&
               (parentCategory === "offers" && offerCategoryData ? (
-                <div className="group flex flex-row items-center justify-start gap-2 mb-4">
-                  {console.log({ offerCategoryData, subCategory })}
+                <div className="group flex flex-row items-center justify-start gap-2 mb-4 w-full">
                   <OfferSlider
                     offerCategoryData={offerCategoryData}
                     setSelectedOfferCategory={setSelectedOfferCategory}
@@ -1205,7 +1204,8 @@ const Tabs = ({
                       shortDescription={text.shortDescription}
                       perUnitPrice={text.perUnitPrice}
                       productType={text.productType}
-                      urgency={text.urgency}
+                      urgency={text.urgency} 
+                      unitType={text.unitType}
                       expectedDelivery={text.expectedDelivery}
                     />
 

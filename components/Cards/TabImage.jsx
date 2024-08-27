@@ -9,7 +9,7 @@ const TabImage = ({ src, alt, width, height, handleTab, labelData, href, firstDa
   const circledData = Array.isArray(labelData) ? labelData : [labelData];
 
   console.log("labelData", labelData)
-  console.log(circledData)
+  console.log({circledData})
 
 
   const [windowWidth, setWindowWidth] = useState(0);

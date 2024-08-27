@@ -11,9 +11,13 @@ import Link from "next/link";
 import { useDebounceValue } from "usehooks-ts";
 // import search from "../../assets/icons/search.svg";
 // import mainlogo from "../../assets/ayatriologo.png";
-import { searchProductsRequest } from "../Features/search/searchSlice"
+import { searchProductsRequest } from "../Features/search/searchSlice";
 import { STORE_MAP_DATA } from "@/constants/store-map-data";
-import { setClickedItem, updateCoords, updateZoom } from "../Features/Slices/mapSlice";
+import {
+  setClickedItem,
+  updateCoords,
+  updateZoom,
+} from "../Features/Slices/mapSlice";
 import { fetchStores } from "../Features/api";
 
 const Expandedbar = ({ searchText, onClose, onSearch }) => {
@@ -27,7 +31,7 @@ const Expandedbar = ({ searchText, onClose, onSearch }) => {
 
   const [stores, setStores] = useState([]);
   const [isStoreLoading, setIsStoreLoading] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(true)
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,26 +42,26 @@ const Expandedbar = ({ searchText, onClose, onSearch }) => {
         //   setIsStoreLoading(false);
         // });
         try {
-          const responce = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/searchMapStore?search=${searchQuery}`)
-          console.log(responce.data)
+          const responce = await axios.get(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/searchMapStore?search=${searchQuery}`
+          );
+          console.log(responce.data);
           setStores(responce.data);
           setIsStoreLoading(false);
         } catch (error) {
-          console.log(error)
+          console.log(error);
           setIsStoreLoading(false);
         }
       }
-    }
-    fetchData()
+    };
+    fetchData();
   }, [searchQuery]);
-
-
 
   let cacheddata = JSON.parse(sessionStorage.getItem("cachedData"));
 
-  console.log(searchQuery)
+  console.log(searchQuery);
 
-  console.log(stores)
+  console.log(stores);
 
   const fetchData = async () => {
     try {
@@ -65,14 +69,13 @@ const Expandedbar = ({ searchText, onClose, onSearch }) => {
       // const cachedData = sessionStorage.getItem("cachedData");
       const cachedSearchText = sessionStorage.getItem("cachedSearchText");
 
-
       if (debouncedSearchQuery !== cachedSearchText) {
         // Perform the search and update the cache
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/products?search=${searchQuery}`
         );
         // sessionStorage.setItem("cachedData", JSON.stringify(response.data));
-        console.log(response.data)
+        console.log(response.data);
         sessionStorage.setItem("cachedSearchText", debouncedSearchQuery);
 
         setData(response.data);
@@ -106,21 +109,16 @@ const Expandedbar = ({ searchText, onClose, onSearch }) => {
     fetchPopularSearchProducts();
   }, []);
 
-
-
   useEffect(() => {
     if (searchQuery === "") {
-      setData([])
+      setData([]);
     }
-  }, [searchQuery])
-
+  }, [searchQuery]);
 
   useEffect(() => {
-    setSearchQuery("")
+    setSearchQuery("");
     // onClose()
-  }, [])
-
-
+  }, []);
 
   // console.log("cached data is ", JSON.parse(cacheddata));
   useEffect(() => {
@@ -143,7 +141,7 @@ const Expandedbar = ({ searchText, onClose, onSearch }) => {
     // router.push(`/product`);
     // router.push("/room/" + item.id);
   };
-  const handleclick = async (id, category) => { };
+  const handleclick = async (id, category) => {};
   const path = usePathname();
   // useEffect(() => {
   //   console.log("mounts")
@@ -163,7 +161,6 @@ const Expandedbar = ({ searchText, onClose, onSearch }) => {
     dispatch(searchProductsRequest(searchQuery));
     // console.log("search called");
   }, [dispatch, searchQuery]);
-
 
   useEffect(() => {
     const handleResize = () => {
@@ -186,7 +183,10 @@ const Expandedbar = ({ searchText, onClose, onSearch }) => {
   const india_zoom = 5;
   const hotels_zoom = 11;
   const [zoom, setZoom] = useState(india_zoom);
-  const [selectedCoords, setSelectedCoords] = useState({ lat: 20.5937, lng: 78.9629 });
+  const [selectedCoords, setSelectedCoords] = useState({
+    lat: 20.5937,
+    lng: 78.9629,
+  });
 
   // const handleResultClick = ({ lat, lng }) => {
 
@@ -213,31 +213,29 @@ const Expandedbar = ({ searchText, onClose, onSearch }) => {
       const longitude = parseFloat(lng);
       const newCoords = { lat: latitude, lng: longitude };
       setSelectedCoords(newCoords);
-      dispatch(updateCoords(newCoords))
+      dispatch(updateCoords(newCoords));
       if (newCoords.lat === 20.593 && newCoords.lng === 78.96) {
         setZoom(india_zoom);
-        dispatch(updateZoom(india_zoom))
+        dispatch(updateZoom(india_zoom));
       } else {
         setZoom(hotels_zoom);
-        dispatch(updateZoom(hotels_zoom))
+        dispatch(updateZoom(hotels_zoom));
       }
-      dispatch(setClickedItem(item))
+      dispatch(setClickedItem(item));
     }
-
   };
 
   const handlePopularSearch = (search) => {
-    console.log(search)
-    setSearchQuery(search)
+    console.log(search);
+    setSearchQuery(search);
     setIsStoreLoading(true);
     fetchStores(search).then((stores) => {
       setStores(stores);
       setIsStoreLoading(false);
     });
-  }
+  };
 
-  console.log(stores)
-
+  console.log(stores);
 
   return (
     <>
@@ -245,12 +243,21 @@ const Expandedbar = ({ searchText, onClose, onSearch }) => {
         <div className="md:fixed md:inset-0 md:bg-black md:opacity-50 md:z-[9998]"></div>
       )}
       <div
-        className={`expanded-search-box block ${path === "/ayatrio-map" ? "lg:pt-[50px] pt-[12px]" : "pt-[12px]"}  bg-white sm:h-310px h-full  sm:w-full w-[100vw]  absolute right-0 top-0  z-[9999] md:mt-[-36px] ${path == "/" ? "sm:mt-[-36px]" : ""
-          } `} style={overflowStyle}
+        className={`expanded-search-box block ${
+          path === "/ayatrio-map" ? "lg:pt-[50px] pt-[12px]" : "pt-[12px]"
+        }  bg-white sm:h-310px h-full  sm:w-full w-[100vw]  absolute right-0 top-0  z-[9999] md:mt-[-36px] ${
+          path == "/" ? "sm:mt-[-36px]" : ""
+        } `}
+        style={overflowStyle}
       >
         <div className="flex flex-row pl-[24px] lg:pl-[0px] items-center  justify-between bg-white  w-full absolute left-0">
           <div className="logo hidden sm:block pl-[48px]">
-            <Image src={ayatrioLogo} className="w-36 z-30" alt="Ayatrio Logo" priority />
+            <Image
+              src={ayatrioLogo}
+              className="w-36 z-30"
+              alt="Ayatrio Logo"
+              priority
+            />
           </div>
           <div className="searchDiv lg:px-40 lg:mr-[100px] h-[36px] lg:h-[45px] flex-1 rounded-full  flex flex-col">
             <div className="searchCon rounded-full relative w-full bg-zinc-100 p-2 ">
@@ -264,7 +271,8 @@ const Expandedbar = ({ searchText, onClose, onSearch }) => {
                   setSearchQuery(e.target.value);
                 }}
               />
-              <Image loading="lazy"
+              <Image
+                loading="lazy"
                 src="/icons/search.svg"
                 alt="Search icon"
                 width={20}
@@ -281,93 +289,110 @@ const Expandedbar = ({ searchText, onClose, onSearch }) => {
           </div>
         </div>
         <div
-          className={`dropdown lg:mt-[40px] lg:pt-[32px] pb-[60px] mt-[60px]  sm:pb-[50px]  flex sm:flex-row flex-col   max-w-full bg-white ${searchQuery
-            ? "sm:px-[48px] pl-0"
-            : "sm:pr-[48px] sm:pl-[360px]"
-            }`}
+          className={`dropdown lg:mt-[40px] lg:pt-[32px] pb-[60px] mt-[60px]  sm:pb-[50px]  flex sm:flex-row flex-col   max-w-full bg-white ${
+            searchQuery ? "sm:px-[48px] pl-0" : "sm:pr-[48px] sm:pl-[360px]"
+          }`}
         >
           <div
             className={`items-start min-w-fit flex cursor-pointer pl-[24px] sm:pl-[0px] flex-col  pr-12
            
           `}
           >
-            {
-              path === "/ayatrio-map" ? (
-                <>
-                  <div className="dropdown-item sm:font-medium  pb-2 text-[14px]  text-[#707072]">
-                    Popular Searches
-                  </div>
-                  <div className="dropdown-item sm:font-medium  py-2   text-[20px] font-medium " onClick={() => handlePopularSearch("Delhi")}>
-                    Delhi
-                  </div>
-                  <div className="dropdown-item sm:font-medium  py-2  text-[20px] font-medium  " onClick={() => handlePopularSearch("Bengaluru")}>
-                    Bengaluru
-                  </div>
-                  <div className="dropdown-item sm:font-medium  py-2   text-[20px] font-medium " onClick={() => handlePopularSearch("Hyderabad")}>
-                    Hyderabad
-                  </div>
-                  <div className="dropdown-item sm:font-medium hidden sm:flex  py-2  text-[20px] font-medium " onClick={() => handlePopularSearch("Kolkata")}>
-                    Kolkata
-                  </div>
-                </>
-              )
-                :
-                (
-                  <>
-                    <div className="dropdown-item sm:font-medium  pb-2 text-[14px]  text-[#707072]">
-                      Popular Searches
-                    </div>
-                    <div className={`md:flex hidden flex-col  ${searchQuery ? "max-w-[300px]" : ""}`}>
-                      {popularSearchProducts.map((item) => (
-                        <Link
-                          key={item._id}
-                          className="dropdown-item sm:font-medium   py-2  text-[20px] font-medium "
-                          href={`/${item.category.replace(/\s/g, "-")}/product/${item.subcategory.replace(/\s/g, "-")}`}
-                          onClick={onClose}
-                        >
-                          {item.productTitle}
-                        </Link>
-                      ))
-                      }
-                    </div>
-                    <div className="flex flex-col md:hidden y h-full">
-                      {popularSearchProducts.slice(0, 3).map((item) => (
-                        <Link
-                          key={item._id}
-                          className="dropdown-item sm:font-medium   py-2  text-[20px] font-medium "
-                          href={`/${item.category.replace(/\s/g, "-")}/product/${item.subcategory.replace(/\s/g, "-")}`}
-                          onClick={onClose}
-                        >
-                          {item.productTitle}
-                        </Link>
-                      ))
-                      }
-                    </div>
-                  </>
-                )
-            }
+            {path === "/ayatrio-map" ? (
+              <>
+                <div className="dropdown-item sm:font-medium  pb-2 text-[14px]  text-[#707072]">
+                  Popular Searches
+                </div>
+                <div
+                  className="dropdown-item sm:font-medium  py-2   text-[20px] font-medium "
+                  onClick={() => handlePopularSearch("Delhi")}
+                >
+                  Delhi
+                </div>
+                <div
+                  className="dropdown-item sm:font-medium  py-2  text-[20px] font-medium  "
+                  onClick={() => handlePopularSearch("Bengaluru")}
+                >
+                  Bengaluru
+                </div>
+                <div
+                  className="dropdown-item sm:font-medium  py-2   text-[20px] font-medium "
+                  onClick={() => handlePopularSearch("Hyderabad")}
+                >
+                  Hyderabad
+                </div>
+                <div
+                  className="dropdown-item sm:font-medium hidden sm:flex  py-2  text-[20px] font-medium "
+                  onClick={() => handlePopularSearch("Kolkata")}
+                >
+                  Kolkata
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="dropdown-item sm:font-medium  pb-2 text-[14px]  text-[#707072]">
+                  Popular Searches
+                </div>
+                <div
+                  className={`md:flex hidden flex-col  ${
+                    searchQuery ? "max-w-[300px]" : ""
+                  }`}
+                >
+                  {popularSearchProducts.map((item) => (
+                    <Link
+                      key={item._id}
+                      className="dropdown-item sm:font-medium   py-2  text-[20px] font-medium "
+                      href={`/${item.subcategory.replace(
+                        /\s/g,
+                        "-"
+                      )}/subcollection/${item.category.replace(/\s/g, "-")}`}
+                      onClick={onClose}
+                    >
+                      {item.productTitle}
+                    </Link>
+                  ))}
+                </div>
+                <div className="flex flex-col md:hidden y h-full">
+                  {popularSearchProducts.slice(0, 3).map((item) => (
+                    <Link
+                      key={item._id}
+                      className="dropdown-item sm:font-medium   py-2  text-[20px] font-medium "
+                      href={`/${item.subcategory.replace(
+                        /\s/g,
+                        "-"
+                      )}/subcollection/${item.category.replace(/\s/g, "-")}`}
+                      onClick={onClose}
+                    >
+                      {item.productTitle}
+                    </Link>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
-          {
-            data && path !== "/ayatrio-map" &&
+          {data && path !== "/ayatrio-map" && (
             <div className="grid sm:grid-cols-5 grid-cols-2 gap-4  px-[24px] lg:px-[0px] lg:mt-0 mt-10">
-              {(!data) || isLoading ? (
+              {!data || isLoading ? (
                 <p className="flex flex-row justify-center items-center">
                   No results found
                 </p>
               ) : (
-                (data && data.length > 0
-                  ? data
-                  : []
-                ).map((item) => (
-                  <Link href={`/${item.productTitle?.replace(/ /g, "-")}`} onClick={onClose}>
+                (data && data.length > 0 ? data : []).map((item) => (
+                  <Link
+                    href={`/${item.productTitle?.replace(/ /g, "-")}/${
+                      item.patternNumber
+                    }`}
+                    onClick={onClose}
+                  >
                     <div
                       key={item.id}
                       className="col-span-1"
                       onClick={() => handleRoute(item)}
                     >
                       <div className="">
-                        <Image loading="lazy"
+                        <Image
+                          loading="lazy"
                           src={item.images[0]}
                           width={170}
                           height={170}
@@ -382,66 +407,69 @@ const Expandedbar = ({ searchText, onClose, onSearch }) => {
                         {item.category}
                       </div>
                       <div className="lg:text-[16px] text-[14px]  font-medium pt-[7px]  text-black">
-                        Rs. {item.specialprice?.price || item.discountedprice?.price || item.perUnitPrice}
+                        Rs.{" "}
+                        {item.specialprice?.price ||
+                          item.discountedprice?.price ||
+                          item.perUnitPrice}
                       </div>
                     </div>
                   </Link>
                 ))
               )}
             </div>
-          }
+          )}
 
-          {
-            path === "/ayatrio-map" && searchQuery && (
-
-              <div className="grid sm:grid-cols-5 grid-cols-2 gap-2 sm:ml-44 px-[24px] lg:px-[0px] lg:mt-0 mt-10 ">
-                {(!stores) ? (
-                  <p className="flex flex-row justify-center items-center">
-                    No results found
-                  </p>
-                ) : (
-                  (stores && stores?.length > 0
-                    ? stores
-                    : []
-                  ).map((item) => {
-                    console.log(item)
-                    return (
-                      <div >
-                        <div
-                          key={item._id}
-                          className="col-span-1 cursor-pointer"
-                          // onClick={() => handleRoute(item)}
-                          onClick={() => handleResultClick({
-                            lat: item.geo_location.latitude,
-                            lng: item.geo_location.longitude,
-                          }, item)}
-                        >
-                          <div className="lg:w-[170px] w-[150px] h-[150px] lg:h-[170px]">
-                            <Image loading="lazy"
-                              src={item.images[0]}
-                              width={170}
-                              height={170}
-                              alt={item.name}
-                              className="w-[100%] h-[100%] object-fill"
-                            />
-                          </div>
-                          <div className="lg:text-[16px] text-[14px] font-medium text-black pt-2 ">
-                            {item.name}
-                          </div>
-                          <div className="lg:text-[12px] text-[12px]  font-normal py-[2px] line-clamp-2 text-[#707072]">
-                            {item.address}
-                          </div>
-                          <div className="lg:text-[12px] text-[12px]  font-semibold  text-black">
-                            {item.phone}
-                          </div>
+          {path === "/ayatrio-map" && searchQuery && (
+            <div className="grid sm:grid-cols-5 grid-cols-2 gap-2 sm:ml-44 px-[24px] lg:px-[0px] lg:mt-0 mt-10 ">
+              {!stores ? (
+                <p className="flex flex-row justify-center items-center">
+                  No results found
+                </p>
+              ) : (
+                (stores && stores?.length > 0 ? stores : []).map((item) => {
+                  console.log(item);
+                  return (
+                    <div>
+                      <div
+                        key={item._id}
+                        className="col-span-1 cursor-pointer"
+                        // onClick={() => handleRoute(item)}
+                        onClick={() =>
+                          handleResultClick(
+                            {
+                              lat: item.geo_location.latitude,
+                              lng: item.geo_location.longitude,
+                            },
+                            item
+                          )
+                        }
+                      >
+                        <div className="lg:w-[170px] w-[150px] h-[150px] lg:h-[170px]">
+                          <Image
+                            loading="lazy"
+                            src={item.images[0]}
+                            width={170}
+                            height={170}
+                            alt={item.name}
+                            className="w-[100%] h-[100%] object-fill"
+                          />
+                        </div>
+                        <div className="lg:text-[16px] text-[14px] font-medium text-black pt-2 ">
+                          {item.name}
+                        </div>
+                        <div className="lg:text-[12px] text-[12px]  font-normal py-[2px] line-clamp-2 text-[#707072]">
+                          {item.address}
+                        </div>
+                        <div className="lg:text-[12px] text-[12px]  font-semibold  text-black">
+                          {item.phone}
                         </div>
                       </div>
-                    )
-                  })
-                )}
-              </div>
-            )
-          }
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          )}
         </div>
       </div>
     </>

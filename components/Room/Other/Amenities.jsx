@@ -5,30 +5,30 @@ import React, { useEffect, useState, useRef } from "react";
 import { FreeMode, Mousewheel, Pagination, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-
 const Amenities = ({ data }) => {
   const amenities = data.features || [];
-  const [categoryDetails, setCategoryDetails] = useState()
-  console.log(data)
+  const [categoryDetails, setCategoryDetails] = useState();
+  console.log(data);
 
   console.log({ amenities });
-  const [showMore, setShowMore] = useState(false)
-
+  const [showMore, setShowMore] = useState(false);
 
   const handleShowMore = () => {
-    setShowMore(!showMore)
-  }
+    setShowMore(!showMore);
+  };
   const fetchCategoryDetails = async () => {
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/getCategoryByName/${data?.category}`)
-    console.log(response.data)
-    setCategoryDetails(response.data)
-  }
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/getCategoryByName/${data?.category}`
+    );
+    console.log(response.data);
+    setCategoryDetails(response.data);
+  };
 
   useEffect(() => {
     if (data?.category) {
-      fetchCategoryDetails()
+      fetchCategoryDetails();
     }
-  }, [data?.category])
+  }, [data?.category]);
 
   const swiper1Ref = useRef(null);
 
@@ -50,37 +50,51 @@ const Amenities = ({ data }) => {
     groupedAmenities.push(amenities.slice(i, i + 5));
   }
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
     <>
       {amenities.length > 0 && (
-        <div className="place-offerings  py-[16px]  ">
-          <h3 className=" text-[#222222] text-[20px] font-medium">
-            Core Functionality
-          </h3>
-
-          <div className={`hidden amenities mt-4 md:grid ${amenities.length > 5 ? 'grid-cols-2' : 'grid-cols-1'} sm:w-auto `}>
-
-            <div className="col-span-1">
-              {amenities.slice(0, 5).map((amenity) => (
-                <div key={amenity._id} className="flex items-center pt-[16px]">
-                  <div className="mr-4 w-[30px] h-[30px]">
-                    <Image
-                      loading="lazy"
-                      width={30}
-                      height={30}
-                      src={amenity.image}
-                      alt={amenity.name}
-                      className="h-full w-full"
-                    />
-                  </div>
-                  <span className="font-normal text-[16px] text-[#222222]">{amenity.text}</span>
-                </div>
-              ))}
+        <div className="place-offerings border-t-[0.5px] border-b-[0.5px] border-[#f5f5f5]  py-[24px]  ">
+          <div
+            className="flex justify-between items-center "
+            onClick={toggleDropdown}
+          >
+            <div className="">
+              <h3 className=" text-[#222222] text-[20px] font-medium">
+                Core Functionality
+              </h3>
             </div>
-            {amenities.length > 5 && (
+            <div div className="pr-5">
+              <Image
+                src="/icons/downarrow.svg"
+                alt="tick"
+                width={25}
+                height={25}
+                // className={`cursor-pointer transform transition-transform duration-300 ${
+                //   isDropdownOpen ? "rotate-180" : ""
+                // }`}
+              />
+            </div>
+          </div>
+
+          {/*  */}
+          {isDropdownOpen && (
+            <div
+              className={`hidden amenities mt-4 md:grid ${
+                amenities.length > 5 ? "grid-cols-2" : "grid-cols-1"
+              } sm:w-auto `}
+            >
               <div className="col-span-1">
-                {amenities.slice(5).map((amenity) => (
-                  <div key={amenity._id} className="flex items-center pt-[16px]">
+                {amenities.slice(0, 5).map((amenity) => (
+                  <div
+                    key={amenity._id}
+                    className="flex items-center pt-[16px]"
+                  >
                     <div className="mr-4 w-[30px] h-[30px]">
                       <Image
                         loading="lazy"
@@ -91,54 +105,20 @@ const Amenities = ({ data }) => {
                         className="h-full w-full"
                       />
                     </div>
-                    <span className="font-normal text-[16px] text-[#222222]">{amenity.text}</span>
+                    <span className="font-normal text-[16px] text-[#222222]">
+                      {amenity.text}
+                    </span>
                   </div>
                 ))}
               </div>
-            )}
-          </div>
-
-          <div className="md:hidden h-auto max-h-[300px] w-full mt-2">
-            <Swiper
-              {...swiperOptions}
-              ref={swiper1Ref}
-              scrollbar={{
-                hide: false,
-                draggable: true,
-              }}
-              mousewheel={{
-                forceToAxis: true,
-                invert: false,
-              }}
-              freeMode={{
-                enabled: true,
-                sticky: true,
-              }}
-              breakpoints={{
-                300: {
-                  slidesPerView: 1.1,
-                  spaceBetween: 0,
-                },
-                640: {
-                  slidesPerView: 2,
-                  spaceBetween: 10,
-                },
-                1024: {
-                  slidesPerView: 2,
-                  spaceBetween: 10,
-                },
-              }}
-              allowSlideNext={true}
-              allowSlidePrev={true}
-              slideNextClass="custom-next-button"
-              slidePrevClass="custom-prev-button"
-              className=""
-            >
-              {groupedAmenities.map((group, index) => (
-                <SwiperSlide key={index} className=" mb-[30px]">
-                  {group.map((amenity) => (
-                    <div key={amenity._id} className="flex my-4   items-center w-auto">
-                      <div className=" w-[30px] h-[30px] mr-4">
+              {amenities.length > 5 && (
+                <div className="col-span-1">
+                  {amenities.slice(5).map((amenity) => (
+                    <div
+                      key={amenity._id}
+                      className="flex items-center pt-[16px]"
+                    >
+                      <div className="mr-4 w-[30px] h-[30px]">
                         <Image
                           loading="lazy"
                           width={30}
@@ -148,14 +128,79 @@ const Amenities = ({ data }) => {
                           className="h-full w-full"
                         />
                       </div>
-                      <span className="font-normal max-w-[200px] text-[16px]">{amenity.text}</span>
+                      <span className="font-normal text-[16px] text-[#222222]">
+                        {amenity.text}
+                      </span>
                     </div>
                   ))}
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-
+                </div>
+              )}
+            </div>
+          )}
+          {isDropdownOpen && (
+            <div className="md:hidden overflow-visible h-auto max-h-[300px] w-full mt-2">
+              <Swiper
+                {...swiperOptions}
+                ref={swiper1Ref}
+                scrollbar={{
+                  hide: false,
+                  draggable: true,
+                }}
+                mousewheel={{
+                  forceToAxis: true,
+                  invert: false,
+                }}
+                freeMode={{
+                  enabled: true,
+                  sticky: true,
+                }}
+                breakpoints={{
+                  300: {
+                    slidesPerView: 1.1,
+                    spaceBetween: 0,
+                  },
+                  640: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                  },
+                  1024: {
+                    slidesPerView: 2,
+                    spaceBetween: 10,
+                  },
+                }}
+                allowSlideNext={true}
+                allowSlidePrev={true}
+                slideNextClass="custom-next-button"
+                slidePrevClass="custom-prev-button"
+                className=""
+              >
+                {groupedAmenities.map((group, index) => (
+                  <SwiperSlide key={index} className=" mb-[30px]">
+                    {group.map((amenity) => (
+                      <div
+                        key={amenity._id}
+                        className="flex my-4   items-center w-auto"
+                      >
+                        <div className=" w-[30px] h-[30px] mr-4">
+                          <Image
+                            loading="lazy"
+                            width={30}
+                            height={30}
+                            src={amenity.image}
+                            alt={amenity.name}
+                            className="h-full w-full"
+                          />
+                        </div>
+                        <span className="font-normal max-w-[200px] text-[16px]">
+                          {amenity.text}
+                        </span>
+                      </div>
+                    ))}
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          )}
 
           {/* <button
             type="button"

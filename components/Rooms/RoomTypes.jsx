@@ -14,7 +14,7 @@ const RoomTypes = () => {
             <div className="flex flex-wrap">
                 {roomOptions.map((room, index) => (
                     <div key={index} className="w-1/5 p-4">
-                        <Link href={`/rooms/${room.replace(/\s+/g, '-')}`} passHref>
+                        <Link href={`/${room.replace(/\s+/g, '-')}/rooms`} passHref>
                             <div className="flex rounded-md overflow-hidden">
                                 <Image loading="lazy"src={temp} className="w-16 h-16 object-cover rounded-md" alt={room || "room"} />
                                 <div className="p-2">

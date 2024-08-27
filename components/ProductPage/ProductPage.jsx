@@ -15,6 +15,7 @@ import UserReviewPosts from "../Cards/UserReviewPosts";
 import axios from "axios";
 import Carous from "../Carousel/Carous";
 import { viewItem } from "@/tag-manager/events/view_item";
+import AccessoriesPosts from "../Cards/AccessoriesPosts";
 
 const ProductPage = ({ productId, initialData }) => {
   const [data, setData] = useState(initialData);
@@ -53,7 +54,7 @@ const ProductPage = ({ productId, initialData }) => {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/fetchAccessoriesByCategory/${data?.category}`
       );
-      console.log("harsh accessories", response.data)
+      console.log("harsh accessories", response.data);
       setAccessories(response.data);
     } catch (error) {
       console.log(error);
@@ -117,10 +118,12 @@ const ProductPage = ({ productId, initialData }) => {
           <RoomInfo data={data} accessories={accessories} />
           {/* <AccessoriesPosts accessories={accessories} /> */}
           <Reviews productId={data._id} data={data} />
+
           <UserReviewPosts
             slidesPerView={2.2}
             SubcategoryName={data.subcategory}
           />
+          <AccessoriesPosts accessories={accessories} />
         </div>
         <div className="h-full w-full relative p-4 hidden md:block">
           <div

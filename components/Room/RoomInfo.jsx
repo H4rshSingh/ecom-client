@@ -132,6 +132,12 @@ const RoomInfo = ({ data, accessories }) => {
     setLoadingInstallation(false);
   }
 
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
     <div className="w-full">
       <div className="font-normal text-sm  flex flex-col gap-4 my-6">
@@ -289,103 +295,145 @@ const RoomInfo = ({ data, accessories }) => {
 
         <Amenities data={data} />
 
-        <AccessoriesPosts accessories={accessories} />
-
-        <div className="flex">
-          {data?.author && (
-            <div className="flex flex-col my-4 gap-6 w-full max-w-3xl">
-              <div className="flex items-center gap-4">
-                <Link
-                  href={`/profile/${data.author._id}`}
-                  className="flex-shrink-0"
-                >
-                  <Image
-                    src={data.author.image}
-                    height={120}
-                    width={120}
-                    alt="avatar"
-                    className="rounded-full w-[100px] h-[100px] md:w-[120px] md:h-[120px]"
-                  />
-                </Link>
-                <div className="flex flex-col">
-                  <span className="text-[#757575]">Collaboration</span>
-                  <div className="text-[13px] lg:text-[16px] p-1 flex  items-center font-bold ">
-                    <Link
-                      href={`/profile/${data.author._id}`}
-                      className=" text-[#1D1D1F] font-bold text-[18px]"
-                    >
-                      {data.author.displayName}
-                    </Link>
-                    {data.author.links?.linkedin && (
-                      <Link
-                        href={data.author.links?.linkedin}
-                        className="flex items-center"
-                        target="_blank"
-                      >
-                        <Image
-                          loading="lazy"
-                          className="sm:h-6 h-6 sm:w-6 w-6"
-                          src="/icons/social-icon/linkedln.svg"
-                          alt={`LinkedIn for ${data.author.links?.linkedin}`}
-                          width={24}
-                          height={24}
-                        />
-                      </Link>
-                    )}
-                    {data.author.links?.instagram && (
-                      <Link
-                        href={data.author.links?.instagram}
-                        className="flex items-center"
-                        target="_blank"
-                      >
-                        <Image
-                          loading="lazy"
-                          className="sm:h-6 h-6 sm:w-6 w-6"
-                          src="/icons/social-icon/instagram.svg"
-                          alt={`LinkedIn for ${data.author.links?.instagram}`}
-                          width={24}
-                          height={24}
-                        />
-                      </Link>
-                    )}
-                    {data.author.links?.youtube && (
-                      <Link
-                        href={data.author.links?.youtube}
-                        className="flex items-center"
-                        target="_blank"
-                      >
-                        <Image
-                          loading="lazy"
-                          className="sm:h-6 h-6 sm:w-6 w-6"
-                          src="/icons/social-icon/youtube.svg"
-                          alt={`LinkedIn for ${data.author.links?.youtube}`}
-                          width={24}
-                          height={24}
-                        />
-                      </Link>
-                    )}
+        {/* <div className="flex"> */}
+        {data?.author && (
+          <div className="flex flex-col border-b-[0.5px] border-[#f5f5f5] -mt-4 py-[24px]">
+            <div className="flex justify-between" onClick={toggleDropdown}>
+              <div className="flex items-center space-x-2">
+                <div className="flex -space-x-2 overflow-hidden">
+                  <div className=" bg-white rounded-full flex items-center justify-center w-[27px] h-[27px] md:w-[27px] md:h-[27px]">
+                    <Image
+                      src="/images/logo/officialLogo.jpg"
+                      height={25}
+                      width={25}
+                      alt="Profile1"
+                      className="rounded-full w-[25px] h-[25px] md:w-[25px] md:h-[25px]"
+                    />
                   </div>
-                  <p className="hidden md:block text-[#1D1D1F] font-semibold text-sm pt-3 line-clamp-5 md:w-[80%]">
-                    {`${data.author.authorDetails?.description.slice(
-                      0,
-                      180
-                    )}...`}
-                  </p>
-                  <p className="md:hidden text-[#1D1D1F] font-semibold text-sm pt-3 line-clamp-5 md:w-[80%]">
-                    {`${data.author.authorDetails?.description.slice(
-                      0,
-                      50
-                    )}...`}
-                  </p>
+                  <div className=" bg-white rounded-full flex items-center justify-center w-[27px] h-[27px] md:w-[27px] md:h-[27px]">
+                    <Image
+                      src={data.author.image}
+                      height={25}
+                      width={25}
+                      alt="Profile1"
+                      className="rounded-full w-[25px] h-[25px] md:w-[25px] md:h-[25px]"
+                    />
+                  </div>
                 </div>
+                <span className="text-[#222222] text-[20px] font-medium">
+                  Artist collaboration
+                </span>
               </div>
-
-              {otherProductByAuthorId.length > 0 && (
-                <RoomInfoSlider data={otherProductByAuthorId} />
-              )}
+              <div className="pr-5">
+                <Image
+                  src="/icons/downarrow.svg"
+                  alt="tick"
+                  width={25}
+                  height={25}
+                  // className={`cursor-pointer transform transition-transform duration-300 ${
+                  //   isDropdownOpen ? "rotate-180" : ""
+                  // }`}
+                />
+              </div>
             </div>
-          )}
-        </div>
+            {/*  */}
+            {isDropdownOpen && (
+              <div className="flex flex-col my-8 gap-6 max-w-3xl ">
+                <div className="flex items-center gap-4">
+                  <Link
+                    href={`/profile/${data.author._id}`}
+                    className="flex-shrink-0"
+                  >
+                    <Image
+                      src={data.author.image}
+                      height={120}
+                      width={120}
+                      alt="avatar"
+                      className="rounded-full w-[100px] h-[100px] md:w-[120px] md:h-[120px]"
+                    />
+                  </Link>
+                  <div className="flex flex-col">
+                    <span className="text-[#757575]">Collaboration</span>
+                    <div className="text-[13px] lg:text-[16px] p-1 flex  items-center font-bold ">
+                      <Link
+                        href={`/profile/${data.author._id}`}
+                        className=" text-[#1D1D1F] font-bold text-[18px]"
+                      >
+                        {data.author.displayName}
+                      </Link>
+                      {data.author.links?.linkedin && (
+                        <Link
+                          href={data.author.links?.linkedin}
+                          className="flex items-center"
+                          target="_blank"
+                        >
+                          <Image
+                            loading="lazy"
+                            className="sm:h-6 h-6 sm:w-6 w-6"
+                            src="/icons/social-icon/linkedln.svg"
+                            alt={`LinkedIn for ${data.author.links?.linkedin}`}
+                            width={24}
+                            height={24}
+                          />
+                        </Link>
+                      )}
+                      {data.author.links?.instagram && (
+                        <Link
+                          href={data.author.links?.instagram}
+                          className="flex items-center"
+                          target="_blank"
+                        >
+                          <Image
+                            loading="lazy"
+                            className="sm:h-6 h-6 sm:w-6 w-6"
+                            src="/icons/social-icon/instagram.svg"
+                            alt={`LinkedIn for ${data.author.links?.instagram}`}
+                            width={24}
+                            height={24}
+                          />
+                        </Link>
+                      )}
+                      {data.author.links?.youtube && (
+                        <Link
+                          href={data.author.links?.youtube}
+                          className="flex items-center"
+                          target="_blank"
+                        >
+                          <Image
+                            loading="lazy"
+                            className="sm:h-6 h-6 sm:w-6 w-6"
+                            src="/icons/social-icon/youtube.svg"
+                            alt={`LinkedIn for ${data.author.links?.youtube}`}
+                            width={24}
+                            height={24}
+                          />
+                        </Link>
+                      )}
+                    </div>
+                    <p className="hidden md:block text-[#1D1D1F] font-semibold text-sm pt-3 line-clamp-5 md:w-[80%]">
+                      {`${data.author.authorDetails?.description.slice(
+                        0,
+                        180
+                      )}...`}
+                    </p>
+                    <p className="md:hidden text-[#1D1D1F] font-semibold text-sm pt-3 line-clamp-5 md:w-[80%]">
+                      {`${data.author.authorDetails?.description.slice(
+                        0,
+                        50
+                      )}...`}
+                    </p>
+                  </div>
+                </div>
+
+                {otherProductByAuthorId.length > 0 && (
+                  <RoomInfoSlider data={otherProductByAuthorId} />
+                )}
+              </div>
+            )}
+          </div>
+        )}
+        {/* </div> */}
+        {/* <AccessoriesPosts accessories={accessories} /> */}
       </div>
     </div>
   );

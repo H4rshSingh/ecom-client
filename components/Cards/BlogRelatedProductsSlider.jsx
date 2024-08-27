@@ -83,7 +83,7 @@ const BlogRelatedProductsSlider = ({ data }) => {
                   id={product._id}
                   category={product.category}
                   productId={product.productId}
-                  setPopupVisible={setPopupVisible}
+                  // setPopupVisible={setPopupVisible}
                   cssClass={"card1flex"}
                   // inCart={inCart}
                   unitType={product.unitType}

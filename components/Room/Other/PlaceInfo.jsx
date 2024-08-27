@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 // import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 import { FreeMode, Mousewheel, Pagination, Scrollbar } from "swiper/modules";
@@ -29,89 +29,137 @@ const PlaceInfo = (data) => {
     allowSlideNext: true,
   };
 
-  console.log("Place info", data)
+  console.log("Place info", data);
   const groupedCoreValues = groupIntoThrees(data?.data?.coreValues);
+  //
+  const [isDropdownOpen, setIsDropdownOpen] = useState(true);
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   return (
     <>
       {data?.data?.coreValues ? (
         <>
-          <div className={`place-features hidden md:grid ${data?.data?.coreValues.length > 6 ? 'grid grid-cols-2 gap-4' : ''}`}>
-            {
-              data?.data?.coreValues.length > 0 && data?.data?.coreValues.map((item, index) => (
-                <div className="hosted-by flex flex-start items-center pb-4 font-lg" key={index}>
-                  <div className="mr-4 w-[30px] h-[30px]">
-                    <img
-                      className="w-full h-full"
-                      src={item.image}
-                      alt=""
-                    />
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-[16px] mb-[4px]">
-                      {item.heading}
-                    </h4>
-                    <p className="md:w-[100%] font-normal text-[14px text-[#6A6A6A] line-clamp-1">
-                      {item.text}
-                    </p>
-                  </div>
-                </div>
-              ))
-            }
-          </div>
-
-          <div className="md:hidden h-auto max-h-[300px] w-full mb-4">
-            <Swiper
-              ref={swiper2Ref}
-              {...swiperOptions}
-              scrollbar={{
-                hide: false,
-                draggable: true,
-              }}
-              mousewheel={{
-                forceToAxis: true,
-                invert: false,
-              }}
-              freeMode={{
-                enabled: true,
-                sticky: true,
-              }}
-              breakpoints={{
-                300: {
-                  slidesPerView: 1,
-                  spaceBetween: 10,
-                },
-                640: {
-                  slidesPerView: 2,
-                  spaceBetween: 10,
-                },
-                1024: {
-                  slidesPerView: 1.1,
-                  spaceBetween: 10,
-                },
-              }}
-              allowSlideNext={true}
-              allowSlidePrev={true}
-              slideNextClass="custom-next-button"
-              slidePrevClass="custom-prev-button"
-              className="px-10 ">
-              {groupedCoreValues.map((group, groupIndex) => (
-                <SwiperSlide key={groupIndex} className="min-h-[210px]">
-                  {group.map((item, index) => (
-                    <div className="hosted-by gap-3 flex flex-start items-center pb-4 font-lg" key={index}>
+          <div className="flex flex-col ">
+            <div className="flex justify-between" onClick={toggleDropdown}>
+              <div className="text-[#222222] text-[20px] font-medium">
+                Core Values
+              </div>
+              <div className="pr-5">
+                <Image
+                  src="/icons/downarrow.svg"
+                  alt="tick"
+                  width={25}
+                  height={25}
+                  // className={`cursor-pointer transform transition-transform duration-300 ${
+                  //   isDropdownOpen ? "rotate-180" : ""
+                  // }`}
+                />
+              </div>
+            </div>
+            {/* dropdown */}
+            {isDropdownOpen && (
+              <div
+                className={`place-features mt-7 hidden md:grid ${
+                  data?.data?.coreValues.length > 6
+                    ? "grid grid-cols-2 gap-4"
+                    : ""
+                }`}
+              >
+                {data?.data?.coreValues.length > 0 &&
+                  data?.data?.coreValues.map((item, index) => (
+                    <div
+                      className="hosted-by flex flex-start items-center pb-4 font-lg"
+                      key={index}
+                    >
                       <div className="mr-4 w-[30px] h-[30px]">
-                        <img className="w-full min-w-[30px] min-h-[30px]" src={item.image} alt="" />
+                        <img
+                          className="w-full h-full"
+                          src={item.image}
+                          alt=""
+                        />
                       </div>
                       <div>
-                        <h4 className="font-medium text-[16px] mb-1">{item.heading}</h4>
-                        <span className="  text-[#6A6A6A] text-[14px] ">{item.text}</span>
+                        <h4 className="font-medium text-[16px] mb-[4px]">
+                          {item.heading}
+                        </h4>
+                        <p className="md:w-[100%] font-normal text-[14px text-[#6A6A6A] line-clamp-1">
+                          {item.text}
+                        </p>
                       </div>
                     </div>
                   ))}
-                </SwiperSlide>
-              ))}
-            </Swiper>
+              </div>
+            )}
+
+            {isDropdownOpen && (
+              <div className="md:hidden overflow-visible h-auto mt-7 max-h-[300px] w-full mb-4">
+                <Swiper
+                  ref={swiper2Ref}
+                  {...swiperOptions}
+                  scrollbar={{
+                    hide: false,
+                    draggable: true,
+                  }}
+                  mousewheel={{
+                    forceToAxis: true,
+                    invert: false,
+                  }}
+                  freeMode={{
+                    enabled: true,
+                    sticky: true,
+                  }}
+                  breakpoints={{
+                    300: {
+                      slidesPerView: 1,
+                      spaceBetween: 10,
+                    },
+                    640: {
+                      slidesPerView: 2,
+                      spaceBetween: 10,
+                    },
+                    1024: {
+                      slidesPerView: 1.1,
+                      spaceBetween: 10,
+                    },
+                  }}
+                  allowSlideNext={true}
+                  allowSlidePrev={true}
+                  slideNextClass="custom-next-button"
+                  slidePrevClass="custom-prev-button"
+                  className="px-10 "
+                >
+                  {groupedCoreValues.map((group, groupIndex) => (
+                    <SwiperSlide key={groupIndex} className="min-h-[210px]">
+                      {group.map((item, index) => (
+                        <div
+                          className="hosted-by gap-3 flex flex-start items-center pb-4 font-lg"
+                          key={index}
+                        >
+                          <div className="mr-4 w-[30px] h-[30px]">
+                            <img
+                              className="w-full min-w-[30px] min-h-[30px]"
+                              src={item.image}
+                              alt=""
+                            />
+                          </div>
+                          <div>
+                            <h4 className="font-medium text-[16px] mb-1">
+                              {item.heading}
+                            </h4>
+                            <span className="  text-[#6A6A6A] text-[14px] ">
+                              {item.text}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            )}
           </div>
         </>
       ) : (
@@ -194,13 +242,17 @@ const PlaceInfo = (data) => {
           </div> */}
         </>
       )}
-      <div className="flex flex-col gap-2 ">
-        <p className="text-[#484848] text-xs font-normal">Pattern Number</p>
-        <div className="flex">
-          <p className="bg-black px-4 py-1 text-white text-xs font-bold min-w-min">{data?.data?.patternNumber}</p>
-          <div />
+      {isDropdownOpen && (
+        <div className="flex flex-col gap-2 ">
+          <p className="text-[#484848] text-xs font-normal">Pattern Number</p>
+          <div className="flex">
+            <p className="bg-black px-4 py-1 text-white text-xs font-bold min-w-min">
+              {data?.data?.patternNumber}
+            </p>
+            <div />
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

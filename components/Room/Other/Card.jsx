@@ -1894,11 +1894,11 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                   </div>
                 )}
                 {sidebarContect === "addToBag" && (
-                  <div className=" fixed h-full w-screen  bg-black/50  top-0 left-0 z-[99999]">
+                  <div className=" fixed h-full w-screen bg-black/50  top-0 left-0 z-[99999]">
                     <section className="text-black bg-white flex-col absolute right-0 top-0 h-screen z-[99999] w-full  lg:w-[35%] flex ">
-                      <div className="flex flex-col ">
-                        <div className="md:px-[40px] pb-[32px] px-[20px]">
-                          <div className="flex items-center justify-between h-[72px] mb-2">
+                      <div className="flex flex-col overflow-y-auto">
+                        <div className="md:px-[40px] px-[20px]">
+                          <div className="flex items-center justify-between h-auto py-1">
                             <p className="text-[14px] font-medium text-[#484848]">
                               Added to cart
                             </p>
@@ -1913,20 +1913,20 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                                 loading="lazy"
                                 src="/icons/cancel.svg"
                                 alt="close"
-                                width={20}
-                                height={30}
+                                width={15}
+                                height={15}
                                 className="py-2"
                               />
                             </button>
                           </div>
-                          <div className="flex items-start w-[100%]  pb-10 absolute ">
+                          <div className="flex items-start w-[100%] ">
                             <Image
                               loading="lazy"
                               src={data?.images[0]}
                               height={100}
                               width={100}
                               alt={data?.productTitle || "product image"}
-                              className=" mr-[16px] mt-[6px] h-[100px] min-w-[100px]"
+                              className=" mr-[16px] h-[100px] min-w-[100px]"
                             />
 
                             <div className="flex flex-col mx-[12px] md:w-[100%] w-[50%]">
@@ -1938,9 +1938,9 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                               </p>
                               <div className="font-bold items-end flex mb-1 my-[5px]">
                                 <h2
-                                  className={`text-3xl leading-[0.5] tracking-wide ${
+                                  className={`text-xl leading-[0.5] tracking-wide ${
                                     data?.specialprice?.price
-                                      ? "bg-[#FFD209] px-2 pt-3 w-fit shadow-lg"
+                                      ? "bg-[#FFD209] px-2 pt-0 w-fit shadow-lg"
                                       : ""
                                   } `}
                                   style={
@@ -1958,9 +1958,9 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                                 </h2>{" "}
                                 <span> &nbsp;/{data.unitType}</span>
                               </div>
-                              {(data?.specialprice?.price ||
+                              {/* {(data?.specialprice?.price ||
                                 data?.discountedprice?.price) && (
-                                <div className="flex flex-col my-3">
+                                <div className="flex flex-col">
                                   <p className="text-[#757575] text-[12px] pt-[3px]">
                                     Regular price:{" "}
                                     <span className="font-bold text-black">
@@ -2000,11 +2000,11 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                                     </p>
                                   ) : null}
                                 </div>
-                              )}
+                              )} */}
                             </div>
                           </div>
 
-                          <div className="w-full border-t mt-[155px]  ">
+                          <div className="w-full border-t mt-2 ">
                             {/* {categoryDetails &&
                               categoryDetails.availableServices &&
                               categoryDetails.availableServices.length > 0 && (
@@ -2027,11 +2027,11 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                               )} */}
                             {avaliableServices &&
                               avaliableServices.length > 0 && (
-                                <div className="flex items-center justify-between">
-                                  <h2 className="md:text-[24px] text-[18px] font-bold mt-2">
+                                <div className="flex items-center justify-between  mt-2">
+                                  <h2 className="md:text-[14px] text-[14px] font-semibold">
                                     Add other services
                                   </h2>
-                                  <p className="text-[#111111] text-[14px] mr-2 cursor-pointer hover:underline font-medium">
+                                  <p className="text-[#111111] text-[12px] mr-2 cursor-pointer hover:underline font-medium">
                                     View More
                                   </p>
                                 </div>
@@ -2050,12 +2050,12 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                                   return (
                                     <div
                                       key={idx}
-                                      className={`flex items-center w-full justify-between mt-4 border p-3 cursor-pointer hover:border-black rounded-md ${
+                                      className={`flex items-center w-full justify-between mt-2 border p-3 cursor-pointer hover:border-black rounded-md ${
                                         isSelected ? "border-black" : ""
                                       }`}
                                     >
                                       <div className="flex flex-col max-w-[200px] items-start gap-1">
-                                        <p className="text-[14px] font-semibold text-[#484848] flex gap-4">
+                                        <p className="text-[13px] font-semibold text-[#484848] flex gap-2">
                                           <Image
                                             loading="lazy"
                                             src={"/icons/instalation.svg"}
@@ -2066,7 +2066,7 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                                           />{" "}
                                           {service?.name}
                                         </p>
-                                        <p className="text-[14px] font-semibold text-[#484848]">
+                                        <p className="text-[13px] font-semibold text-[#484848]">
                                           <span className="text-[10px] font-bold">
                                             Rs
                                           </span>{" "}
@@ -2102,7 +2102,7 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                                           </div>
                                         </div>
                                       )}
-                                      <span>
+                                      <span className="text-[13px]">
                                         Rs.{" "}
                                         {selectedService?.quantity *
                                           service?.cost || 0}
@@ -2119,16 +2119,16 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                                   );
                                 })}
                             </div>
-                            <h2 className="md:text-[24px] text-[18px] font-bold mt-2">
+                            <h2 className="md:text-[15px] text-[15px] font-semibold  mt-4">
                               Similar products
                             </h2>
-                            <div className="pb-28 h-[500px] border-t overflow-y-auto">
+                            <div className="pb-20 h-[500px] ">
                               {categoryProducts &&
                               categoryProducts.length > 0 ? (
                                 categoryProducts.map((product) => (
                                   <div
                                     key={product._id}
-                                    className="flex items-start  justify-between cursor-pointer  mt-[30px]  pb-10"
+                                    className="flex items-start  justify-between cursor-pointer  mt-[20px]"
                                     onMouseEnter={() => setShowCart(true)}
                                     onMouseLeave={() => setShowCart(false)}
                                   >
@@ -2152,9 +2152,9 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                                         </p>
                                         <div className="font-bold items-end flex mb-1 my-[5px]">
                                           <h2
-                                            className={`text-3xl leading-[0.5] tracking-wide ${
+                                            className={`text-xl leading-[0.5] tracking-wide ${
                                               product?.specialprice?.price
-                                                ? "bg-[#FFD209] px-2 pt-3 w-fit shadow-lg"
+                                                ? "bg-[#FFD209] pl-1 pr-1 pt-3 w-fit shadow-lg"
                                                 : ""
                                             } `}
                                             style={
@@ -2181,7 +2181,7 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                                     </div>
 
                                     <div
-                                      className="bg-[#0152be] p-1.5 rounded-full max-w-fit self-center md:mr-10 "
+                                      className=" bg-[#0152be] p-1.5 rounded-full max-w-fit self-center "
                                       onClick={() =>
                                         handleAddToCart(product._id)
                                       }
@@ -2223,8 +2223,17 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                           </div>
                         </div>
                         <div className="flex w-full px-[16px] py-[24px] gap-4  md:py-0 md:px-0  md:flex-row flex-col items-center justify-around absolute bottom-0 left-0 border-t bg-white z-10 ">
+                          {/* <button
+                            className="md:px-[42px] w-full px-[24px] md:h-[56px] h-[40px] border   rounded-full md:my-[24px] text-[8px] md:text-[14px] font-semibold md:ml-[24px] hover:border-black"
+                            onClick={() => {
+                              setsidebarContent(null);
+                              document.body.style.overflow = "auto";
+                            }}
+                          >
+                            Continue shopping
+                          </button> */}
                           <button
-                            className="md:px-[42px] w-full px-[24px] md:h-[56px] h-[40px] border   rounded-full md:my-[24px] text-[12px] md:text-[14px] font-semibold md:ml-[24px] hover:border-black"
+                            className=" w-full px-[16px] h-[30px] border  rounded-full text-[14px] md:text-[14px] md:h-[45px] md:ml-[10px] font-semibold hover:border-black"
                             onClick={() => {
                               setsidebarContent(null);
                               document.body.style.overflow = "auto";
@@ -2232,7 +2241,7 @@ const Card = ({ data, productId, isModalOpen, setIsModalOpen }) => {
                           >
                             Continue shopping
                           </button>
-                          <button className="md:px-[42px] w-full px-[24px] md:h-[56px] h-[40px] border rounded-full md:my-[24px] bg-black text-white text-[12px] md:text-[14px] font-semibold md:mr-[24px] hover:bg-gray-900">
+                          <button className="w-full px-[20px] md:h-[45px] h-[40px] mr-2 border rounded-full bg-black text-white text-[12px] md:text-[14px] font-semibold md:my-[10px]  hover:bg-gray-900">
                             <div onClick={handleGoToShoppingBag}>
                               Go to shopping bag
                             </div>

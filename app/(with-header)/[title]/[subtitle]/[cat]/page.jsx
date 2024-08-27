@@ -242,7 +242,7 @@ const page = async ({ params }) => {
                   priceValidUntil: product.specialprice?.endDate,
                   itemCondition: "https://schema.org/NewCondition",
                   availability: "https://schema.org/InStock",
-                  url: `${BASE_URL}/product/${product.productTitle}`,
+                  url: `${BASE_URL}/${product.productTitle}/${product.productId}`,
                   seller: {
                     name: "Ayatrio",
                   },
@@ -292,7 +292,7 @@ const page = async ({ params }) => {
                   priceValidUntil: product.specialprice?.endDate,
                   itemCondition: "https://schema.org/NewCondition",
                   availability: "https://schema.org/InStock",
-                  url: `${BASE_URL}/product/${product.productTitle}`,
+                  url: `${BASE_URL}/${product.productTitle}/${product.productId}`,
                   seller: {
                     name: "Ayatrio",
                   },
